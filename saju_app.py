@@ -63,7 +63,7 @@ with st.sidebar:
         selected_model = "gemini-2.5-flash"
 
 # --- 메인 로직 ---
-st.title("💋 2026년 미리보기: 🌙루나 미래 상담사")
+st.title("💋 2026년 예언:🌙루나 미래 상담사")
 st.markdown("### \"우리 동생, 2025년 고생했어. 이제 2026년 준비해야지?\"")
 
 # 주제 선택
@@ -170,3 +170,4 @@ if st.button(btn_text, use_container_width=True):
 
         except Exception as e:
             st.error(f"아오.. 서버가 말을 안 듣네. 다시 눌러봐. (Error: {e})")
+
