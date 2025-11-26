@@ -7,6 +7,7 @@ import random
 # ==========================================
 # [PROJECT: LUNA - THE FINAL MASTERPIECE]
 # "모바일 세로 화면 최적화 + 스레드 감성 찐언니 페르소나 탑재"
+# "천재 작가 & 심리 닥터의 영혼 주입 버전"
 # ==========================================
 
 # 1. 페이지 기본 설정 (무조건 맨 위)
@@ -23,10 +24,10 @@ st.markdown("""
     /* 폰트 불러오기 (명조체) */
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;500;700;900&display=swap');
     
-    /* 전체 기본 폰트 설정 (기본 사이즈도 살짝 줄임) */
+    /* 전체 기본 폰트 설정 */
     html, body, [class*="css"] {
         font-family: 'Noto Serif KR', serif;
-        font-size: 22px !important; /* 18px -> 22px 확대 */
+        font-size: 22px !important; 
         font-weight: 500;
     }
 
@@ -39,8 +40,6 @@ st.markdown("""
     /* --------------------------------------------------------
        [1] 방해꾼들(아이콘/배지) 핵폭탄 삭제 구역
        -------------------------------------------------------- */
-    
-    /* 상단 헤더, 툴바, 데코레이션 삭제 - 더 강력하게 타겟팅 */
     header, [data-testid="stHeader"], [data-testid="stToolbar"], [data-testid="stDecoration"] {
         display: none !important;
         visibility: hidden !important;
@@ -48,8 +47,6 @@ st.markdown("""
         opacity: 0 !important;
         pointer-events: none !important;
     }
-
-    /* 우측 상단 뷰어 배지 (Avatar Icon) 및 각종 버튼 - 와일드카드로 강력 삭제 */
     div[class*="viewerBadge"], .viewerBadge_container__1QSob, 
     button[kind="header"], [data-testid="baseButton-header"] {
         display: none !important;
@@ -57,43 +54,33 @@ st.markdown("""
         height: 0 !important;
         width: 0 !important;
     }
-    
-    /* 우측 하단 'Streamlit' 아이콘 (Running Man) & 상태 위젯 */
     [data-testid="stStatusWidget"], footer, .stAppDeployButton {
         display: none !important;
         visibility: hidden !important;
     }
-    
-    /* 상단 여백 제거 (화면 꽉 차게) */
     .block-container {
         padding-top: 1rem !important;
         padding-bottom: 5rem !important;
     }
 
     /* --------------------------------------------------------
-       [2] 텍스트 가독성 (제자님 지침 완벽 반영)
+       [2] 텍스트 가독성
        -------------------------------------------------------- */
-    
-    /* 카테고리 제목 (이름, 생년월일 등) -> 진한 흰색 + 굵게 */
     .stTextInput label, .stDateInput label, .stTimeInput label, .stRadio label, div[role="radiogroup"] label p {
         color: #FFFFFF !important;
-        font-size: 18px !important; /* 사이즈 축소 */
-        font-weight: 700 !important; /* Bold */
+        font-size: 18px !important; 
+        font-weight: 700 !important; 
     }
-    
-    /* 입력 예시 (Placeholder) -> 흰색 + 굵기 보통 */
     input::placeholder {
         color: #FFFFFF !important; 
-        opacity: 0.7 !important; /* 너무 쨍하면 헷갈리니 살짝 투명도 */
-        font-weight: 400 !important; /* Normal */
+        opacity: 0.7 !important; 
+        font-weight: 400 !important;
     }
-    
-    /* 입력칸 디자인 */
     .stTextInput input, .stDateInput input, .stTimeInput input {
         background-color: #222 !important; 
         color: #FFF !important; 
         border: 2px solid #555 !important;
-        height: 55px !important; /* 높이도 살짝 줄임 */
+        height: 55px !important;
         font-size: 18px !important;
         border-radius: 10px;
         text-align: center;
@@ -102,30 +89,28 @@ st.markdown("""
     /* --------------------------------------------------------
        [3] UI 컴포넌트 디자인 (모바일 최적화 Ver.)
        -------------------------------------------------------- */
-    
-    /* 메인 타이틀 (한 줄에 쏙 들어오게 축소) */
     .main-title {
         color: #E5C17C;
         font-weight: 900;
         text-align: center;
-        font-size: 1.5rem; /* 1.8rem -> 1.5rem (완벽한 한 줄) */
+        font-size: 1.5rem;
         margin-bottom: 5px;
         text-shadow: 0 0 15px rgba(229, 193, 124, 0.3);
-        word-break: keep-all; /* 단어 중간에 끊기지 않게 */
+        word-break: keep-all;
     }
     .sub-title {
         color: #BBB;
         text-align: center;
-        font-size: 1.0rem; /* 축소 */
+        font-size: 1.0rem;
         margin-bottom: 25px;
     }
 
-    /* 가격표(복채) 박스 스타일 - 골드 테두리 + 글자 축소 */
+    /* 가격표(복채) 박스 스타일 */
     .price-box {
         background-color: #181818;
-        border: 2px solid #E5C17C; /* 금색 테두리 적용 */
+        border: 2px solid #E5C17C;
         border-radius: 15px;
-        padding: 15px; /* 패딩 축소 */
+        padding: 15px;
         text-align: center;
         margin-bottom: 30px;
         box-shadow: 0 4px 15px rgba(229, 193, 124, 0.15);
@@ -143,7 +128,7 @@ st.markdown("""
         color: #E5C17C;
         border: 2px solid #E5C17C;
         height: 70px !important;
-        font-size: 20px !important; /* 버튼 글씨 축소 */
+        font-size: 20px !important;
         font-weight: 900;
         border-radius: 12px;
         margin-top: 10px;
@@ -164,7 +149,7 @@ st.markdown("""
         background-color: #1A1A1A;
         border: 2px solid #D4AF37;
         border-radius: 15px;
-        padding: 25px; /* 패딩 축소 */
+        padding: 25px;
         margin-top: 40px;
         text-align: center;
         box-shadow: 0 10px 30px rgba(0,0,0,0.6);
@@ -175,13 +160,13 @@ st.markdown("""
         background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
         color: #000 !important;
         font-weight: 900;
-        font-size: 18px; /* 버튼 텍스트 축소 (줄바꿈 방지) */
+        font-size: 18px;
         padding: 20px 0;
         border-radius: 12px;
         text-decoration: none;
         margin-top: 15px;
         animation: heartbeat 1.5s infinite ease-in-out;
-        word-break: keep-all; /* 단어 뭉침 유지 */
+        word-break: keep-all;
     }
     
     .footer-note {
@@ -190,7 +175,21 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- 사이드바 (API 키 관리 - 평소엔 안 보임) ---
+# --- [천재 작가의 두뇌] 일간(Day Stem) 계산 함수 ---
+# "너는 나무야"라고 정확히 말해주기 위한 핵심 로직
+def get_day_gan(birth_date):
+    # 기준일: 2000년 1월 1일은 '무오(戊午)'일 (천간: 무(戊) -> index 4)
+    ref_date = datetime.date(2000, 1, 1)
+    ref_gan_idx = 4 # 갑(0), 을(1), 병(2), 정(3), 무(4)...
+    
+    gan_list = ["갑(甲, 큰 나무)", "을(乙, 꽃/덩굴)", "병(丙, 태양)", "정(丁, 촛불)", "무(戊, 큰 산)", 
+                "기(己, 밭/대지)", "경(庚, 바위/도끼)", "신(辛, 보석/칼)", "임(壬, 바다)", "계(癸, 빗물)"]
+    
+    delta_days = (birth_date - ref_date).days
+    gan_idx = (ref_gan_idx + delta_days) % 10
+    return gan_list[gan_idx]
+
+# --- 사이드바 (API 키 관리) ---
 with st.sidebar:
     if "GEMINI_API_KEY" in st.secrets:
         gemini_api_key = st.secrets["GEMINI_API_KEY"]
@@ -199,9 +198,10 @@ with st.sidebar:
 
 # --- 메인 화면 구성 ---
 st.markdown("<div class='main-title'>루나 : 운명 상담소</div>", unsafe_allow_html=True)
-st.markdown("<div class='sub-title'>(사이다 버전 🥤)</div>", unsafe_allow_html=True)
+# [요청 반영] 서브 타이틀 수정
+st.markdown("<div class='sub-title'>(🥤 사이다 예언 맛집 🍿)</div>", unsafe_allow_html=True)
 
-# 인트로 (공감 + 팩폭 예고)
+# 인트로
 st.markdown("""
 <div style='text-align: center; margin-bottom: 30px; line-height: 1.6; font-size: 16px; color: #DDD;'>
     "혼자 끙끙 앓지 마요."<br>
@@ -211,7 +211,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# 가격표 (글씨 사이즈 모바일 최적화)
+# 가격표
 st.markdown("""
 <a href="https://www.threads.net/@luna_fortune_2026" target="_blank" style="text-decoration:none;">
     <div class="price-box">
@@ -250,13 +250,12 @@ birth_time = st.time_input("태어난 시간 (모르면 패스)", datetime.time(
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# 고민 입력창 (제자님 확정 자극적 예시 적용)
+# 고민 입력창
 if "2026" in topic:
     worry = st.text_input("가장 큰 고민은?", placeholder="예: 남편이 바람난거같아요, 돈을 언제 벌수있을까요?, 친구랑 계속 싸워요")
     btn_label = "두근 💓 2026년 미리 보고 해결책 찾기!"
 else:
     worry = st.text_input("오늘 기분은?", placeholder="예: 소개팅 하는데 잘 될까요? 면접이 있어요.")
-    # 버튼 멘트 (확정)
     btn_label = "⚡ 오늘 나에게 닥칠 운세 미리보기"
 
 # --- 랜덤 행운템 리스트 ---
@@ -277,73 +276,78 @@ if st.button(btn_label):
     elif not gemini_api_key:
         st.error("⚠️ API 키가 없어요. 관리자에게 문의하세요.")
     else:
-        # [수정] 안전을 위해 호칭 설정 로직을 try 밖으로 이동 (에러 발생 시에도 변수가 살아있도록)
+        # 1. 호칭 설정
         if gender == "남성":
             my_title = "누나"
         else:
             my_title = "언니"
 
         try:
+            # 2. 날짜 계산 & 일간(Day Stem) 추출
             calendar = KoreanLunarCalendar()
             calendar.setSolarDate(birth_date.year, birth_date.month, birth_date.day)
             lunar_date = calendar.LunarIsoFormat()
             
-            # --- [핵심] 40대 찐언니/누나 페르소나 (V2: 스레드 감성 완벽 이식) ---
+            # [핵심] 일간 계산: 사용자의 타고난 기운을 정확히 파악
+            my_igan = get_day_gan(birth_date)
+
+            # 3. [천재적 프롬프트 설계] 심리학적 콜드 리딩(Cold Reading) + 팩트 폭격 + 욕망 자극
             prompt = f"""
             [Role]
-            You are 'Luna', a cool, stylish, and affectionate 40-something older sister ({my_title}).
-            You are NOT a boring fortune teller. You are a life mentor who speaks blunt truths but deeply cares about your younger siblings (the user).
-            
-            [Target Audience]
-            Women/Men in their 30s who are stressed about money, career, and relationships. They hate cliché advice.
-            
-            [Tone & Manner - "Thread Style"]
-            1. **Speech Level:** Use "Banmal" (Informal/Casual Korean) for the entire conversation like a close sister. (e.g., "왔어?", "그랬구나.", "이건 진짜 아니야.")
-            2. **Addressing Rule (CRITICAL):** - Even though you use Banmal, **ALWAYS address the user as "{name}에서 성 빼고 이름+님"** (Remove the surname and add '님').
-               - **Example:** If input is "박경미", call her **"경미님"** (NOT "경미야", NOT "박경미씨", NOT "박경미님").
-               - Mix with "우리 동생".
-               - **Opening:** "우리 동생, {name}에서 성 빼고 이름+님 왔어?" (e.g. "우리 동생, 경미님 왔어?")
-            3. **Direct & Provocative:** Don't be vague. 
-               - Bad: "Realtionships might be difficult."
-               - Good: "남자는 좀 꼬이는데, 실속이 없어. 정신 똑바로 차려야 해."
-            4. **Empathy but Fact-Bombing:** Start with empathy ("Aigo, so hard right?"), then hit them with facts ("But honestly, you are too stubborn.").
+            You are 'Luna', a 40-something '{my_title}' who is a genius at reading people's minds.
+            You combine Traditional Saju analysis with Modern Psychology (Cold Reading).
+            You speak like a very close, cool, and blunt sister/noona.
 
-            [Output Structure - STRICTLY FOLLOW THIS FORMAT]
-            
-            **1. Intro**
-            - Start with: "우리 동생, **[Name]님** 왔어? 요즘 {worry} 때문에 머리 좀 아팠겠네." (Make sure to remove surname for [Name]님).
-            - Empathize with their specific situation briefly. "마음이 싱숭생숭하지? {my_title}가 시원하게 긁어줄게."
-            
-            **2. 🔥 팩트 진단 (Personality)**
-            - Analyze their personality using Saju elements (Wood, Fire, etc.) but use **METAPHORS**.
-            - Example: "우리 **[Name]님**은 봄날의 큰 소나무(甲木) 같은 사람이야."
-            - **Contrast:** Mention their outer strength vs. inner stress/weakness. "겉으론 쿨한 척 해도 속으론 끙끙 앓지? 너 맘 여린 거 {my_title}는 다 보여."
-            
-            **3. 🔮 미래 예언 ({topic})**
-            - Give a clear verdict.
-            - **Money/Career:** Hot or Cold? (e.g., "돈? 아주 좋아! 그냥 질러.")
-            - **Family/Health/Love:** Red light or Green light? (e.g., "근데 연애는 좀 꽝이야.", "건강은 '번아웃' 조심해.")
-            - Use terms like "{my_title}가 보증할게", "이게 문제야", "정신 똑바로 차려".
-            
-            **4. 💋 {my_title}의 코디 추천 (Solution)**
-            - Give a specific **Real-world Item** based on their missing element.
-            - Format: **추천 아이템: [Color] [Item Name]** (e.g., 블랙 가죽 다이어리, 레드 립스틱, 메탈 시계)
-            - Explain WHY based on Saju elements (e.g., "You have too much Fire, so you need Black (Water) to cool it down.").
-            - Closing: "우리 동생, 기 죽지 마. {my_title}가 항상 응원한다. 알았지?"
+            [User Profile]
+            - Name: {name} ({gender})
+            - Birth: {birth_date} (Lunar: {lunar_date})
+            - **Core Element (Ilgan): {my_igan}** <--- CRITICAL: Build your character analysis on this.
+            - Worry: {worry}
+            - Topic: {topic}
 
-            [User Info]
-            Name: {name} ({gender})
-            Birth: {birth_date} (Lunar: {lunar_date})
-            Topic: {topic}
-            Concern: {worry}
+            [Tone & Manner: "The Thread/Twitter Vibe"]
+            - **Informal (Banmal):** "왔어?", "그랬구나.", "이건 진짜 아니야."
+            - **Naming:** Call user "{name}에서 성 빼고 이름+님" (e.g., "경미님") mixed with "우리 동생".
+            - **Style:** - Don't be polite. Be real. 
+              - Use rhetorical questions: "내 말 틀려? 맞아, 아니야?"
+              - **Hyper-Realistic:** Talk about real life scenarios (Netflix, Instagram, late-night snacks, office politics).
+
+            [Structure & Content Instructions]
+
+            **(Start immediately with Greeting)**
+            "우리 동생, **[Name]님** 왔어? {worry} 때문에 요즘 잠도 제대로 못 잤지? {my_title}가 보니까 딱 답이 나오네."
+
+            ### 🔥 팩트 진단: [Create a catchy Title like "겉은 장군감, 속은 두부멘탈"]
+            (Analyze personality based on '{my_igan}'. Use **Cold Reading** technique.)
+            - "너는 **{my_igan}**의 기운을 타고났어." (Explain what this means metaphorically).
+            - **Guess specific habits:** - If Fire: "욱해서 질러놓고 밤에 이불킥 하지?"
+              - If Water: "남들 고민은 다 들어주면서 정작 네 속얘기는 아무한테도 못 하지?"
+              - If Metal: "아닌 건 절대 아닌 칼 같은 성격이라 손절도 잘 하지?"
+            - *Write 5-6 sentences that make them shiver with accuracy.*
+
+            ### 🔮 [Year]년 운명 예언: [Shocking Title like "돈방석 아니면 쪽박, 네 선택이야"]
+            (Give a dramatic verdict on Money & Relationships.)
+            - **Money:** Be extremely specific. "3월, 9월에 목돈 나갈 일 생겨. 친구가 뭐 하자고 꼬시면 절대 하지 마." or "가만히 있어도 돈이 들어오는 운이야. 이직 생각 있으면 무조건 질러."
+            - **Relationships:** "오래된 인연은 끊어지고 귀인이 들어와. 근데 그 귀인이 겉모습은 별로일 수 있어."
+            - *Emphasize with bold text.*
+
+            ### 💋 {my_title}의 코디 추천: [Color] [Item Name]
+            (Format: **추천 아이템: [Color] [Item Name]**)
+            (Connect Saju to **Psychological Desire/Fear**).
+            - "너 지금 기운이 너무 뜨거워서 돈이 다 녹고 있어. 이걸 막아줄 **[Color]** 아이템이 필수야."
+            - "이거 없으면 내년에도 사람 때문에 스트레스 받아서 탈모 올 수도 있다? 나를 지켜주는 부적이라고 생각하고 꼭 챙겨."
+
+            (Closing)
+            "우리 동생, 기 죽지 마. 네 운명은 네가 만드는 거야. {my_title} 말 명심하고! 알았지?"
             """
             
-            with st.spinner(f"⚡ 루나 {my_title}가 신기 돋는 눈으로 스캔 중... (찌릿!)"):
+            # [요청 반영] 로딩 멘트 강화
+            with st.spinner(f"⚡ {name}님의 뼈 때릴 준비 중... (멘탈 잡으세요 🤯)"):
                 genai.configure(api_key=gemini_api_key)
-                model = genai.GenerativeModel("gemini-2.5-flash") # Pro 대신 Flash 모델 사용 (속도/안정성 UP)
+                model = genai.GenerativeModel("gemini-2.5-flash") 
                 response = model.generate_content(prompt)
                 
-                # 결과 박스 (가독성 UP + 제목 줄바꿈 방지)
+                # 결과 박스
                 st.markdown(f"""
                 <div style="background-color:#121212; border:1px solid #333; border-radius:15px; padding:25px; margin-top:30px; line-height:1.8;">
                     <h3 style="color:#E5C17C; border-bottom:1px solid #333; padding-bottom:10px; font-size:20px; word-break:keep-all; margin:0 0 10px 0;">📜 {name}님을 위한 {my_title}의 독설 & 애정</h3>
@@ -351,25 +355,25 @@ if st.button(btn_label):
                 </div>
                 """, unsafe_allow_html=True)
                 
-                # 황금박스 (쿠팡)
+                # 황금박스 (욕망 자극 멘트 추가)
                 st.markdown(f"""
                 <div class="golden-box">
-                    <h3 style="color:#FF6B6B; margin:0; font-size:24px;">🚨 {name}님, 이거 하나만 챙겨!</h3>
+                    <h3 style="color:#FF6B6B; margin:0; font-size:24px;">🚨 {name}님, 이거 없으면 손해!</h3>
                     <p style="margin-top:15px; font-size:18px; color:#DDD;">
-                        "2026년, 너의 <b>'폼'</b>을 살려줄<br>
-                        <b>{my_title}의 원픽 생존템</b>이야."
+                        "2026년, 새어나가는 돈과 사람 막아줄<br>
+                        <b>{my_title}의 강력 추천 방패</b>야."
                     </p>
                     <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:10px; margin:20px 0; color:#CCC; font-size:16px;">
-                        비싼 굿즈 필요 없어.<br>
-                        <b>이거 하나면 기운 확 달라진다.</b> 믿어봐.
+                        단순한 물건이 아니야.<br>
+                        <b>너의 부족한 기운을 채워줄 유일한 비책.</b><br>
+                        (품절되기 전에 미리 봐둬)
                     </div>
                     <a href="{selected_link}" target="_blank" class="pulse-button">
-                        👉 {my_title}가 골라준 행운템 보기 (Click)
+                        👉 {my_title}가 골라준 비책 확인하기 (Click)
                     </a>
                 </div>
                 """, unsafe_allow_html=True)
 
         except Exception as e:
-            # [수정] 단순 에러 멘트 대신, 진짜 에러 내용을 출력하여 디버깅 가능하게 변경
             st.error(f"오류가 발생했습니다: {e}")
             st.warning("잠시 후 다시 시도해주세요. 계속 문제가 생기면 관리자에게 이 오류 메시지를 보여주세요.")
