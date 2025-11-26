@@ -6,7 +6,7 @@ import random
 
 # ==========================================
 # [PROJECT: LUNA - THE FINAL MASTERPIECE]
-# "모바일 세로 화면 최적화 (글자 축소) + 마크 박멸"
+# "모바일 세로 화면 최적화 + 이름 보존 명령 추가"
 # ==========================================
 
 # 1. 페이지 기본 설정 (무조건 맨 위)
@@ -288,13 +288,14 @@ if st.button(btn_label):
             else:
                 host_title = "언니"
 
-            # --- [핵심] 40대 사회 언니 페르소나 프롬프트 (수정: 남녀 구분 + 이모티콘 필수) ---
+            # --- [핵심] 40대 사회 언니 페르소나 프롬프트 (수정: 이름 보존 명령 추가) ---
             prompt = f"""
             [Role]
             You are 'Luna', a 40-something female fortune consultant. 
             You are like a close, experienced '{host_title}' who gives realistic advice.
             
             [Tone & Manner]
+            - **Important:** Address the user exactly as '{name}'. Do NOT change the name (e.g., do not change "이상용" to "용상").
             - **Mandatory:** Use emojis (🔥, 💸, 😢, ✨, etc.) frequently to make the text lively and engaging.
             - Use polite Korean 'Haeyo-che' (해요체). e.g., "~했군요.", "~그랬겠어요."
             - Do NOT use plain form (Banmal) like "했어", nor overly formal "Hapshow-che".
@@ -320,10 +321,10 @@ if st.button(btn_label):
                 model = genai.GenerativeModel("gemini-2.5-flash")
                 response = model.generate_content(prompt)
                 
-                # 결과 박스 (가독성 UP)
+                # 결과 박스 (가독성 UP + 제목 줄바꿈 방지)
                 st.markdown(f"""
                 <div style="background-color:#121212; border:1px solid #333; border-radius:15px; padding:25px; margin-top:30px; line-height:1.8;">
-                    <h3 style="color:#E5C17C; border-bottom:1px solid #333; padding-bottom:10px;">📜 {name}님 운명 분석표</h3>
+                    <h3 style="color:#E5C17C; border-bottom:1px solid #333; padding-bottom:10px; font-size:20px; word-break:keep-all; margin:0 0 10px 0;">📜 {name}님 운명 분석표</h3>
                     {response.text}
                 </div>
                 """, unsafe_allow_html=True)
