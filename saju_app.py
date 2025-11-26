@@ -40,18 +40,22 @@ st.markdown("""
        [1] 방해꾼들(아이콘/배지) 핵폭탄 삭제 구역
        -------------------------------------------------------- */
     
-    /* 상단 헤더, 툴바, 데코레이션 삭제 */
+    /* 상단 헤더, 툴바, 데코레이션 삭제 - 더 강력하게 타겟팅 */
     header, [data-testid="stHeader"], [data-testid="stToolbar"], [data-testid="stDecoration"] {
         display: none !important;
         visibility: hidden !important;
         height: 0 !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
     }
 
-    /* 우측 상단 뷰어 배지 (Avatar Icon) - 와일드카드로 강력 삭제 */
-    div[class*="viewerBadge"], .viewerBadge_container__1QSob {
+    /* 우측 상단 뷰어 배지 (Avatar Icon) 및 각종 버튼 - 와일드카드로 강력 삭제 */
+    div[class*="viewerBadge"], .viewerBadge_container__1QSob, 
+    button[kind="header"], [data-testid="baseButton-header"] {
         display: none !important;
         visibility: hidden !important;
         height: 0 !important;
+        width: 0 !important;
     }
     
     /* 우측 하단 'Streamlit' 아이콘 (Running Man) & 상태 위젯 */
@@ -62,7 +66,7 @@ st.markdown("""
     
     /* 상단 여백 제거 (화면 꽉 차게) */
     .block-container {
-        padding-top: 2rem !important;
+        padding-top: 1rem !important;
         padding-bottom: 5rem !important;
     }
 
@@ -261,13 +265,20 @@ if st.button(btn_label):
             calendar.setSolarDate(birth_date.year, birth_date.month, birth_date.day)
             lunar_date = calendar.LunarIsoFormat()
             
-            # --- [핵심] 40대 사회 언니 페르소나 프롬프트 ---
+            # 성별에 따른 호칭 설정
+            if gender == "남성":
+                host_title = "누나"
+            else:
+                host_title = "언니"
+
+            # --- [핵심] 40대 사회 언니 페르소나 프롬프트 (수정: 남녀 구분 + 이모티콘 필수) ---
             prompt = f"""
             [Role]
             You are 'Luna', a 40-something female fortune consultant. 
-            You are like a close, experienced 'older sister' (Unnie) who gives realistic advice.
+            You are like a close, experienced '{host_title}' who gives realistic advice.
             
             [Tone & Manner]
+            - **Mandatory:** Use emojis (🔥, 💸, 😢, ✨, etc.) frequently to make the text lively and engaging.
             - Use polite Korean 'Haeyo-che' (해요체). e.g., "~했군요.", "~그랬겠어요."
             - Do NOT use plain form (Banmal) like "했어", nor overly formal "Hapshow-che".
             - **Phase 1 (Empathy):** Start with deep empathy. Use phrases like "Aigo...", "You must have been so stressed...", "I understand your frustration."
@@ -279,11 +290,12 @@ if st.button(btn_label):
             Birth: {birth_date} (Lunar: {lunar_date})
             Topic: {topic}
             Concern: {worry}
+            My Title for you: {host_title}
             
             [Output Structure]
-            1. ❤️ 따뜻한 위로와 공감 (First, comfort the user deeply regarding their concern)
-            2. ⚡ 냉정한 운명 분석 (Analyze the Pros and Cons based on Saju/Fortune)
-            3. 💊 언니의 현실 처방 (Actionable advice & warm closing)
+            1. ❤️ 따뜻한 위로와 공감 (First, comfort the user deeply regarding their concern. Use emojis!)
+            2. ⚡ 냉정한 운명 분석 (Analyze the Pros and Cons based on Saju/Fortune. Be sharp but polite.)
+            3. 💊 {host_title}의 현실 처방 (Actionable advice & warm closing with emojis)
             """
             
             with st.spinner("⚡ 루나 언니가 운명 스캔 중... (심장이 쿵!)"):
