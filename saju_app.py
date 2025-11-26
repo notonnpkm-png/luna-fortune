@@ -1,15 +1,15 @@
-import random
 import streamlit as st
 import google.generativeai as genai
 import datetime
 from korean_lunar_calendar import KoreanLunarCalendar
+import random
 
 # ==========================================
-# [PROJECT: 루나 언니 - MOBILE OPTIMIZED]
-# "이름 빈칸 수정 + 복채 배너를 메인 화면으로 이동 (모바일 필승 전략)"
+# [PROJECT: 루나 언니 - FINAL MONEY MAKER]
+# "자네가 준 쿠팡 링크 11개를 완벽하게 탑재했다."
 # ==========================================
 
-st.set_page_config(page_title="루나: 미래상담사", page_icon="🌙", layout="wide")
+st.set_page_config(page_title="루나: 미래 상담사", page_icon="🌙", layout="wide")
 
 # --- 스타일링 ---
 st.markdown("""
@@ -22,11 +22,9 @@ st.markdown("""
     }
     h1 { color: #FF007F; font-family: 'Sans-serif'; font-weight: 900; font-style: italic; }
     .stTextInput>div>div>input { color: black; font-weight: bold; }
-    /* 라디오 버튼 텍스트 색상 */
     .stRadio > label { color: white !important; font-size: 16px; }
     div[data-baseweb="radio"] > div { color: white; }
     
-    /* 복채 배너 스타일 */
     .follow-box {
         background-color: #330019; padding: 15px; border-radius: 10px; 
         border: 1px solid #FF007F; text-align: center; margin-bottom: 20px;
@@ -34,10 +32,9 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- 사이드바: 키 설정 (배너는 메인으로 뺌) ---
+# --- 사이드바 ---
 with st.sidebar:
     st.header("🔧 설정")
-    # 자동 로그인
     if "GEMINI_API_KEY" in st.secrets:
         gemini_api_key = st.secrets["GEMINI_API_KEY"]
     else:
@@ -51,15 +48,15 @@ with st.sidebar:
         selected_model = "gemini-2.5-flash"
 
 # --- 메인 로직 ---
-st.title("💋 2026년 예언: 🌙루나 미래 상담사")
+st.title("💋 2026년 예언: 🌙루나 미래상담사")
 st.markdown("### \"우리 동생, 2025년 고생했어. 이제 2026년 준비해야지?\"")
 
-# [🔥 중요] 복채 배너를 화면 맨 위로 이동 (모바일 가시성 100%)
+# 복채 배너
 sns_link = "https://www.threads.net/@luna_fortune_2026"
 st.markdown(f"""
 <a href="{sns_link}" target="_blank" style="text-decoration: none;">
     <div class="follow-box">
-        <p style='color: white; font-weight: bold; margin: 0; font-size: 18px;'>💸 복채는 돈 대신 '팔로우,댓글글'로 받는다.</p>
+        <p style='color: white; font-weight: bold; margin: 0; font-size: 18px;'>💸 복채는 돈 대신 '팔로우'로 받는다.</p>
         <p style='color: #FF007F; font-size: 14px; margin-top: 5px;'>
         (터치해서 약발 받으러 가기 👆)
         </p>
@@ -70,55 +67,58 @@ st.markdown(f"""
 # 주제 선택
 topic = st.radio(
     "뭐가 궁금해? 골라봐.",
-    ["📅 오늘 하루나 잘 넘기자 (오늘의 운세)", "🦄 2026년(병오년) 나 어때? (1년 운세)"],
+    ["📅 오늘 하루나 잘 넘기자 (오늘의 운세)", "🦄 2026년(병오년) 나 어때? (1년운세)"],
     index=1, 
     horizontal=True
 )
 
 col1, col2 = st.columns(2)
 with col1:
-    # [수정 완료] value="" 로 설정하여 빈칸으로 만듦 / placeholder는 회색 안내 문구
     name = st.text_input("이름 (본명)", value="", placeholder="여기에 이름 입력해")
     gender = st.radio("성별", ["여자", "남자"])
 with col2:
     birth_date = st.date_input("생년월일", min_value=datetime.date(1950, 1, 1), value=datetime.date(1990, 1, 1))
     birth_time = st.time_input("태어난 시간", datetime.time(9, 00))
 
-# 질문 & 링크 설정
+# --- [핵심] 자네의 링크 11개가 들어간 랜덤 주머니 ---
 if "2026" in topic:
     worry = st.text_input("내년에 뭐가 제일 걱정돼?", placeholder="돈, 연애, 건강... 솔직히 말해.")
-   lucky_bag_2026 = [ = "https://link.coupang.com/a/c7U5ic", # 행운 키링
-                        "https://link.coupang.com/a/c7Vcxs", # 행운 팔찌
-                        "https://link.coupang.com/a/c7VexJ", # 행운 반지
-                        "https://link.coupang.com/a/c7VfKc", # 행운 다이어리
-                        "https://link.coupang.com/a/c7Vhmc", # 행운 은반지
-                        "https://link.coupang.com/a/c7VinT",# 행운 목걸이
-                        "https://link.coupang.com/a/c7Vkbn", # 행운 양말
-                        "https://link.coupang.com/a/c7Vk67",# 행운 목도리
-                        "https://link.coupang.com/a/c7Vmq1", # 행운 펜
-                        "https://link.coupang.com/a/c7VncA", # 행운 소품
-                        "https://link.coupang.com/a/c7VoiP", # 행운 소품
-                      ]
-    lucky_link = random.choice(lucky_bag_2026) # 주머니에서 하나 랜덤 뽑기!
-               
+    
+    # [2026년용 주머니] - 자네 링크 탑재 완료
+    lucky_bag_2026 = [
+        "https://link.coupang.com/a/c7U5ic", # 행운 키링
+        "https://link.coupang.com/a/c7Vcxs", # 행운 팔찌
+        "https://link.coupang.com/a/c7VexJ", # 행운 반지
+        "https://link.coupang.com/a/c7VfKc", # 행운 다이어리
+        "https://link.coupang.com/a/c7Vhmc", # 행운 은반지
+        "https://link.coupang.com/a/c7VinT", # 행운 목걸이
+        "https://link.coupang.com/a/c7Vkbn", # 행운 양말
+        "https://link.coupang.com/a/c7Vk67", # 행운 목도리
+        "https://link.coupang.com/a/c7Vmq1", # 행운 펜
+        "https://link.coupang.com/a/c7VncA", # 행운 소품
+        "https://link.coupang.com/a/c7VoiP"  # 행운 소품
+    ]
+    lucky_link = random.choice(lucky_bag_2026)
     btn_text = "🦄 2026년 내 운명 팩트체크 하기 (Click)"
+
 else:
     worry = st.text_input("오늘 기분 어때?", placeholder="꿀꿀해, 불안해...")
     
-   lucky_bag_today = [ = "https://link.coupang.com/a/c7U5ic", # 행운 키링
-                        "https://link.coupang.com/a/c7Vcxs", # 행운 팔찌
-                        "https://link.coupang.com/a/c7VexJ", # 행운 반지
-                        "https://link.coupang.com/a/c7VfKc", # 행운 다이어리
-                        "https://link.coupang.com/a/c7Vhmc", # 행운 은반지
-                        "https://link.coupang.com/a/c7VinT",# 행운 목걸이
-                        "https://link.coupang.com/a/c7Vkbn", # 행운 양말
-                        "https://link.coupang.com/a/c7Vk67",# 행운 목도리
-                        "https://link.coupang.com/a/c7Vmq1", # 행운 펜
-                        "https://link.coupang.com/a/c7VncA", # 행운 소품
-                        "https://link.coupang.com/a/c7VoiP", # 행운 소품
-                      ]
-    lucky_link = random.choice(lucky_bag_today) # 주머니에서 하나 랜덤 뽑기!
-    
+    # [오늘용 주머니] - 여기도 똑같이 11개 넣어둠 (확률 2배!)
+    lucky_bag_today = [
+        "https://link.coupang.com/a/c7U5ic", # 행운 키링
+        "https://link.coupang.com/a/c7Vcxs", # 행운 팔찌
+        "https://link.coupang.com/a/c7VexJ", # 행운 반지
+        "https://link.coupang.com/a/c7VfKc", # 행운 다이어리
+        "https://link.coupang.com/a/c7Vhmc", # 행운 은반지
+        "https://link.coupang.com/a/c7VinT", # 행운 목걸이
+        "https://link.coupang.com/a/c7Vkbn", # 행운 양말
+        "https://link.coupang.com/a/c7Vk67", # 행운 목도리
+        "https://link.coupang.com/a/c7Vmq1", # 행운 펜
+        "https://link.coupang.com/a/c7VncA", # 행운 소품
+        "https://link.coupang.com/a/c7VoiP"  # 행운 소품
+    ]
+    lucky_link = random.choice(lucky_bag_today)
     btn_text = "📅 오늘 하루, 언니한테 점검받기 (Click)"
 
 
@@ -136,7 +136,6 @@ if st.button(btn_text, use_container_width=True):
             lunar_date = calendar.LunarIsoFormat()
             current_date_str = "2025년 11월 26일"
             
-            # 호칭 설정
             if gender == "여자": my_title = "언니"
             else: my_title = "누나"
 
@@ -175,6 +174,3 @@ if st.button(btn_text, use_container_width=True):
 
         except Exception as e:
             st.error(f"에러 났다: {e}")
-
-
-
