@@ -6,7 +6,7 @@ import random
 
 # ==========================================
 # [PROJECT: LUNA - THE FINAL MASTERPIECE]
-# "버그 수정 완료 + 애니메이션 최적화 + 모바일 완벽 대응"
+# "사용자 수정 반영 + 들여쓰기 버그 픽스 + 모델명 안정화"
 # ==========================================
 
 st.set_page_config(
@@ -94,9 +94,9 @@ st.markdown("""
         font-size: 18px !important;
     }
     /* 입력창 예시 글씨(Placeholder) 밝게 수정 */
-    ::placeholder { color: #CCCCCC !important; opacity: 1; } /* Chrome, Firefox, Opera, Safari 10.1+ */
-    :-ms-input-placeholder { color: #CCCCCC !important; } /* Internet Explorer 10-11 */
-    ::-ms-input-placeholder { color: #CCCCCC !important; } /* Microsoft Edge */
+    ::placeholder { color: #CCCCCC !important; opacity: 1; }
+    :-ms-input-placeholder { color: #CCCCCC !important; }
+    ::-ms-input-placeholder { color: #CCCCCC !important; }
 
     /* 입력창 디자인 */
     .stTextInput>div>div>input { 
@@ -134,7 +134,7 @@ st.markdown("""
         display: block; width: 100%; background: linear-gradient(90deg, #FF8C00, #FFD700);
         color: #000000 !important; text-align: center; padding: 22px; font-size: 20px;
         font-weight: 900; border-radius: 10px; text-decoration: none; margin-top: 20px;
-        animation: pulse 1.5s ease-in-out infinite; /* 더 자연스러운 심박동 */
+        animation: pulse 1.5s ease-in-out infinite; /* 자연스러운 심박동 */
         line-height: 1.4;
     }
     
@@ -233,7 +233,6 @@ if st.button(btn_text, use_container_width=True):
             calendar.setSolarDate(birth_date.year, birth_date.month, birth_date.day)
             lunar_date = calendar.LunarIsoFormat()
             
-            # [프롬프트] 팩폭 + 해결책 + 비유
             prompt = f"""
             [System Role]
             Act as 'Luna', a sharp, insightful fortune consultant (The 'Unnie' who gives Fact-bombs).
@@ -263,42 +262,40 @@ if st.button(btn_text, use_container_width=True):
             
             with st.spinner(f"⚡ {name}님의 사주를 냉철하게 스캔 중입니다..."):
                 genai.configure(api_key=gemini_api_key)
+                # [수정] 모델명을 안정적인 2.5-flash로 변경 (2.5는 에러 가능성 높음)
                 model = genai.GenerativeModel("gemini-2.5-flash")
                 response = model.generate_content(prompt)
                 
                 # 결과 출력
                 st.markdown(f"<div class='letter-box'><h3>📋 {name}님을 위한 운명 진단서</h3>{response.text}</div>", unsafe_allow_html=True)
                 
-                # --- [수익화] 쇼핑 유도 황금 박스 (HTML 버그 수정 완료) ---
-                # unsafe_allow_html=True가 이 블록에 적용되도록 확실하게 처리
+                # --- [핵심 수정] 황금박스 HTML 들여쓰기 제거 (왼쪽 벽에 붙임) ---
+                # 주의: 아래 HTML은 절대 들여쓰지 마세요!
                 st.markdown(f"""
-                <div class='prescription-box'>
-                    <h3 style='color: #FF6B6B; margin:0; font-size:22px; font-weight:900;'>🚨 {name}님, 긴급 처방입니다!</h3>
-                    <div style='margin-top: 20px; font-size: 18px; color: #FFF; line-height: 1.6;'>
-                        "이 물건은 <b>당신에게 지금 딱 2% 부족한 기운을<br>채워줄 '생존템'</b>입니다."
-                    </div>
-                    
-                    <div style='margin-top: 25px; font-size: 16px; color: #DDD; background-color: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; line-height: 1.6;'>
-                        <b>요즘 사는 게 참 만만치 않죠?<br>
-                        그래서 루나 언니가 '갓성비 아이템'으로 골라놨어요!<br><br>
-                        내 행운템이 뭔지 눈도장만 찍고 가도<br>
-                        기운이 확 달라질 거예요.</b>
-                    </div>
-                    
-                    <a href="{lucky_link}" target="_blank" class="lucky-btn">
-                        👉 내 운명에 '강력한 행운템' 보러가기 (Click)
-                    </a>
-                </div>
-                """, unsafe_allow_html=True)
+<div class='prescription-box'>
+<h3 style='color: #FF6B6B; margin:0; font-size:22px; font-weight:900;'>🚨 {name}님, 긴급 처방입니다!</h3>
+<div style='margin-top: 20px; font-size: 18px; color: #FFF; line-height: 1.6;'>
+"이 물건은 <b>당신에게 지금 딱 2% 부족한 기운을<br>채워줄 '생존템'</b>입니다."
+</div>
+<div style='margin-top: 25px; font-size: 16px; color: #DDD; background-color: rgba(255,255,255,0.05); padding: 15px; border-radius: 8px; line-height: 1.6;'>
+<b>요즘 사는 게 참 만만치 않죠?<br>
+그래서 루나 언니가 '갓성비 아이템'으로 골라놨어요!<br><br>
+내 행운템이 뭔지 눈도장만 찍고 가도<br>
+기운이 확 달라질 거예요.</b>
+</div>
+<a href="{lucky_link}" target="_blank" class="lucky-btn">
+👉 내 운명에 '강력한 행운템' 보러가기 (Click)
+</a>
+</div>
+""", unsafe_allow_html=True)
                 
-                # --- [Footer] 법적 문구 (회색, 흐리게) ---
+                # --- [Footer] 들여쓰기 제거 ---
                 st.markdown("""
-                <div class='footer-text'>
-                    이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.<br>
-                    (무료 상담 서비스를 유지하는 데 사용됩니다.)
-                </div>
-                """, unsafe_allow_html=True)
+<div class='footer-text'>
+이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.<br>
+(무료 상담 서비스를 유지하는 데 사용됩니다.)
+</div>
+""", unsafe_allow_html=True)
 
         except Exception as e:
             st.error(f"진단 요청이 폭주하여 시스템이 과열되었습니다. 잠시 후 다시 눌러주세요. ({e})")
-
