@@ -5,8 +5,8 @@ from korean_lunar_calendar import KoreanLunarCalendar
 import random
 
 # ==========================================
-# [PROJECT: LUNA - FINAL MASTERPIECE]
-# "깃허브 아이콘 완벽 제거 + 모든 기능 통합"
+# [PROJECT: LUNA - THE FINAL MASTERPIECE]
+# "모든 꼬리표/아이콘 제거 + 황금박스 정상화"
 # ==========================================
 
 st.set_page_config(
@@ -28,22 +28,26 @@ st.markdown("""
         font-size: 19px;
     }
     
-    /* 2. [핵폭탄급 삭제] 깃허브 아이콘, 햄버거 메뉴, 풋터 등 모든 꼬리표 제거 */
+    /* 2. [핵폭탄급 삭제] 빨간왕관, 초록아이콘, 햄버거, 풋터 완전 박멸 */
     header, footer {
         visibility: hidden !important;
         display: none !important;
     }
-    .stApp > header {
+    .stAppDeployButton {
         display: none !important;
+        visibility: hidden !important;
     }
-    div[data-testid="stToolbar"] {
+    [data-testid="stStatusWidget"] {
         display: none !important;
+        visibility: hidden !important;
     }
-    div[data-testid="stDecoration"] {
+    [data-testid="stToolbar"] {
         display: none !important;
+        visibility: hidden !important;
     }
-    div[data-testid="stStatusWidget"] {
+    [data-testid="stDecoration"] {
         display: none !important;
+        visibility: hidden !important;
     }
     .viewerBadge_container__1QSob {
         display: none !important;
@@ -239,7 +243,7 @@ if st.button(btn_text, use_container_width=True):
                 
                 st.markdown(f"<div class='letter-box'><h3>📋 {name}님을 위한 운명 진단서</h3>{response.text}</div>", unsafe_allow_html=True)
                 
-                # HTML 들여쓰기 제거 완료 (왼쪽 벽에 붙임)
+                # 황금박스 HTML (들여쓰기 절대 금지! 왼쪽 벽에 붙임)
                 st.markdown(f"""
 <div class='prescription-box'>
 <h3 style='color: #FF6B6B; margin:0; font-size:22px; font-weight:900;'>🚨 {name}님, 긴급 처방입니다!</h3>
@@ -258,6 +262,7 @@ if st.button(btn_text, use_container_width=True):
 </div>
 """, unsafe_allow_html=True)
                 
+                # Footer HTML (들여쓰기 절대 금지!)
                 st.markdown("""
 <div class='footer-text'>
 이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.<br>
