@@ -6,7 +6,7 @@ import random
 
 # ==========================================
 # [PROJECT: LUNA - THE FINAL MASTERPIECE]
-# "완벽한 디자인 + 사회 언니 페르소나 + 마크 박멸"
+# "모바일 세로 화면 최적화 (글자 축소) + 마크 박멸"
 # ==========================================
 
 # 1. 페이지 기본 설정 (무조건 맨 위)
@@ -23,10 +23,10 @@ st.markdown("""
     /* 폰트 불러오기 (명조체) */
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;500;700;900&display=swap');
     
-    /* 전체 기본 폰트 설정 */
+    /* 전체 기본 폰트 설정 (기본 사이즈도 살짝 줄임) */
     html, body, [class*="css"] {
         font-family: 'Noto Serif KR', serif;
-        font-size: 20px !important; 
+        font-size: 18px !important; /* 20px -> 18px 축소 */
         font-weight: 500;
     }
 
@@ -77,7 +77,7 @@ st.markdown("""
     /* 카테고리 제목 (이름, 생년월일 등) -> 진한 흰색 + 굵게 */
     .stTextInput label, .stDateInput label, .stTimeInput label, .stRadio label, div[role="radiogroup"] label p {
         color: #FFFFFF !important;
-        font-size: 19px !important;
+        font-size: 18px !important; /* 사이즈 축소 */
         font-weight: 700 !important; /* Bold */
     }
     
@@ -93,31 +93,47 @@ st.markdown("""
         background-color: #222 !important; 
         color: #FFF !important; 
         border: 2px solid #555 !important;
-        height: 60px !important;
-        font-size: 20px !important;
+        height: 55px !important; /* 높이도 살짝 줄임 */
+        font-size: 18px !important;
         border-radius: 10px;
         text-align: center;
     }
 
     /* --------------------------------------------------------
-       [3] UI 컴포넌트 디자인
+       [3] UI 컴포넌트 디자인 (모바일 최적화 Ver.)
        -------------------------------------------------------- */
     
-    /* 메인 타이틀 (모바일에서 잘리지 않게 사이즈 축소) */
+    /* 메인 타이틀 (한 줄에 쏙 들어오게 축소) */
     .main-title {
         color: #E5C17C;
         font-weight: 900;
         text-align: center;
-        font-size: 2.2rem; /* 3.0rem -> 2.2rem 축소 */
+        font-size: 1.5rem; /* 1.8rem -> 1.5rem (완벽한 한 줄) */
         margin-bottom: 5px;
         text-shadow: 0 0 15px rgba(229, 193, 124, 0.3);
-        word-break: keep-all; /* 단어 단위 줄바꿈 */
+        word-break: keep-all; /* 단어 중간에 끊기지 않게 */
     }
     .sub-title {
         color: #BBB;
         text-align: center;
-        font-size: 1.2rem;
+        font-size: 1.0rem; /* 축소 */
+        margin-bottom: 25px;
+    }
+
+    /* 가격표(복채) 박스 스타일 - 골드 테두리 + 글자 축소 */
+    .price-box {
+        background-color: #181818;
+        border: 2px solid #E5C17C; /* 금색 테두리 적용 */
+        border-radius: 15px;
+        padding: 15px; /* 패딩 축소 */
+        text-align: center;
         margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(229, 193, 124, 0.15);
+        transition: transform 0.2s;
+    }
+    .price-box:active {
+        transform: scale(0.98);
+        border-color: #FFD700;
     }
     
     /* 실행 버튼 */
@@ -126,8 +142,8 @@ st.markdown("""
         background-color: #222;
         color: #E5C17C;
         border: 2px solid #E5C17C;
-        height: 75px !important;
-        font-size: 22px !important;
+        height: 70px !important;
+        font-size: 20px !important; /* 버튼 글씨 축소 */
         font-weight: 900;
         border-radius: 12px;
         margin-top: 10px;
@@ -148,7 +164,7 @@ st.markdown("""
         background-color: #1A1A1A;
         border: 2px solid #D4AF37;
         border-radius: 15px;
-        padding: 30px;
+        padding: 25px; /* 패딩 축소 */
         margin-top: 40px;
         text-align: center;
         box-shadow: 0 10px 30px rgba(0,0,0,0.6);
@@ -159,16 +175,17 @@ st.markdown("""
         background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
         color: #000 !important;
         font-weight: 900;
-        font-size: 21px;
-        padding: 22px 0;
+        font-size: 18px; /* 버튼 텍스트 축소 (줄바꿈 방지) */
+        padding: 20px 0;
         border-radius: 12px;
         text-decoration: none;
-        margin-top: 20px;
+        margin-top: 15px;
         animation: heartbeat 1.5s infinite ease-in-out;
+        word-break: keep-all; /* 단어 뭉침 유지 */
     }
     
     .footer-note {
-        font-size: 13px; color: #666; text-align: center; margin-top: 60px;
+        font-size: 12px; color: #666; text-align: center; margin-top: 60px;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -186,7 +203,7 @@ st.markdown("<div class='sub-title'>(사이다 버전 🥤)</div>", unsafe_allow
 
 # 인트로 (공감 + 팩폭 예고)
 st.markdown("""
-<div style='text-align: center; margin-bottom: 30px; line-height: 1.6; font-size: 18px; color: #DDD;'>
+<div style='text-align: center; margin-bottom: 30px; line-height: 1.6; font-size: 16px; color: #DDD;'>
     "혼자 끙끙 앓지 마요."<br>
     루나 언니가 당신의 미래와 해결책을<br> 
     <b>냉정하고 확실하게</b> 알려줄게요.<br>
@@ -194,13 +211,13 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# 가격표 (제자님 요청 멘트 적용)
+# 가격표 (글씨 사이즈 모바일 최적화)
 st.markdown("""
 <a href="https://www.threads.net/@luna_fortune_2026" target="_blank" style="text-decoration:none;">
-    <div style="background:#181818; border:1px solid #444; border-radius:15px; padding:20px; text-align:center; margin-bottom:40px;">
-        <span style="color:#777; text-decoration:line-through; font-size:16px;">상담료 50,000원</span><br>
-        <span style="color:#FFD700; font-size:24px; font-weight:bold;">✨ 지금만 무료 (0원)</span><br>
-        <div style="margin-top:15px; color:#EEE; font-size:16px;">
+    <div class="price-box">
+        <span style="color:#777; text-decoration:line-through; font-size:14px;">상담료 50,000원</span><br>
+        <span style="color:#FFD700; font-size:21px; font-weight:bold;">✨ 지금만 무료 (0원)</span><br>
+        <div style="margin-top:10px; color:#EEE; font-size:14px;">
             ⚠️ <b>주의:</b> 복채 대신 <b>'팔로우', '댓글'</b>은 필수!!<br>
             <span style="color:#FFD700;">(복채 안내면 상담 효과없는거 아시죠?^^)</span>
         </div>
