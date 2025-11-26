@@ -6,7 +6,7 @@ import random
 
 # ==========================================
 # [PROJECT: LUNA - THE FINAL MASTERPIECE]
-# "디자인, 가독성, 수익화, 멘트, 기능 완벽 통합본"
+# "버그 수정 완료 + 애니메이션 최적화 + 모바일 완벽 대응"
 # ==========================================
 
 st.set_page_config(
@@ -15,7 +15,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- [디자인] CSS 최종 보스 (가독성 혁명 + 꼬리표 제거) ---
+# --- [디자인] CSS 최종 보스 (꼬리표 제거 + 가독성 극대화 + 애니메이션) ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;500;700;900&display=swap');
@@ -28,16 +28,14 @@ st.markdown("""
         font-size: 19px;
     }
     
-    /* 2. 스트림릿 꼬리표 및 불필요한 요소 완전 제거 */
-    footer, header[data-testid="stHeader"], .st-emotion-cache-12fmzuu, .st-emotion-cache-13ln4jf {
+    /* 2. [강력해진 삭제] 스트림릿 꼬리표, 햄버거 메뉴, 깃허브 아이콘 완전 숨김 */
+    footer, header, [data-testid="stToolbar"], .stAppDeployButton, .viewerBadge_container__1QSob {
         display: none !important;
         visibility: hidden !important;
-    }
-    .viewerBadge_container__1QSob, .stAppDeployButton, #MainMenu {
-        display: none !important;
+        height: 0px !important;
     }
 
-    /* 3. 제목 칼각 정렬 (두 줄 분리 후 중앙 정렬) */
+    /* 3. 제목 칼각 정렬 */
     .main-title {
         color: #E5C17C;
         font-family: 'Noto Serif KR', serif;
@@ -68,10 +66,11 @@ st.markdown("""
         word-break: keep-all;
     }
 
-    /* 4. 가격표 (스레드 링크 연동 + 클릭 효과) */
+    /* 4. 가격표 (스레드 링크 연동) */
     a.price-tag-link {
         text-decoration: none;
         display: block;
+        color: inherit; /* 링크 색상 상속 방지 */
     }
     .price-tag {
         background: #161616;
@@ -88,20 +87,23 @@ st.markdown("""
     .price-tag:active { transform: scale(0.98); }
     .sale-price { color: #FFD700; font-weight: 900; font-size: 24px; }
 
-    /* 5. 입력폼 가독성 혁명 (회색 글씨 -> 진한 흰색) */
+    /* 5. [수정] 입력폼 가독성 혁명 (라벨 흰색 + 예시 글씨 밝게) */
     .stRadio label, .stDateInput label, .stTimeInput label, .stTextInput label, p {
         color: #FFFFFF !important;
         font-weight: 700 !important;
         font-size: 18px !important;
     }
-    /* 라디오 버튼 선택 항목 색상 */
-    div[data-baseweb="radio"] > div { color: #FFF !important; }
+    /* 입력창 예시 글씨(Placeholder) 밝게 수정 */
+    ::placeholder { color: #CCCCCC !important; opacity: 1; } /* Chrome, Firefox, Opera, Safari 10.1+ */
+    :-ms-input-placeholder { color: #CCCCCC !important; } /* Internet Explorer 10-11 */
+    ::-ms-input-placeholder { color: #CCCCCC !important; } /* Microsoft Edge */
 
-    /* 입력창 및 버튼 디자인 */
+    /* 입력창 디자인 */
     .stTextInput>div>div>input { 
         text-align: center; background-color: #222; color: #FFF; 
         border: 1px solid #555; height: 55px; font-size: 18px; border-radius: 8px;
     }
+    /* 실행 버튼 */
     .stButton>button {
         background: #222; color: #E5C17C; border: 1px solid #E5C17C;
         height: 70px; font-size: 20px; width: 100%; font-weight: bold; border-radius: 8px;
@@ -115,26 +117,25 @@ st.markdown("""
         margin-top: 30px; line-height: 1.9; font-size: 19px; color: #FAFAFA;
     }
     
-    /* 7. 쇼핑 유도 황금 박스 & 애니메이션 */
+    /* 7. [핵심] 쇼핑 유도 황금 박스 & 애니메이션 최적화 */
     .prescription-box {
         background-color: #1A1A1A; border: 2px solid #D4AF37; 
         padding: 25px; margin-top: 35px; text-align: center; border-radius: 12px;
         box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
     }
-    /* 심장박동 애니메이션 */
+    /* 심장박동 애니메이션 (최적화됨) */
     @keyframes pulse {
-        0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); transform: scale(1); }
-        50% { transform: scale(1.02); }
-        70% { box-shadow: 0 0 0 15px rgba(255, 107, 107, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); transform: scale(1); }
+        0% { transform: scale(1); box-shadow: 0 5px 15px rgba(255, 140, 0, 0.4); }
+        50% { transform: scale(1.03); box-shadow: 0 5px 25px rgba(255, 215, 0, 0.6); }
+        100% { transform: scale(1); box-shadow: 0 5px 15px rgba(255, 140, 0, 0.4); }
     }
-    /* 링크 버튼 스타일 */
+    /* 링크 버튼 스타일 (애니메이션 적용 대상) */
     a.lucky-btn {
         display: block; width: 100%; background: linear-gradient(90deg, #FF8C00, #FFD700);
         color: #000000 !important; text-align: center; padding: 22px; font-size: 20px;
         font-weight: 900; border-radius: 10px; text-decoration: none; margin-top: 20px;
-        animation: pulse 2s infinite; box-shadow: 0 5px 15px rgba(255, 140, 0, 0.4);
-        transition: 0.3s; line-height: 1.4;
+        animation: pulse 1.5s ease-in-out infinite; /* 더 자연스러운 심박동 */
+        line-height: 1.4;
     }
     
     /* 8. Footer 스타일 (회색, 흐리게) */
@@ -154,20 +155,18 @@ with st.sidebar:
         gemini_api_key = st.text_input("API Key 입력", type="password")
 
 # --- 메인 화면 (Header) ---
-# [제목] 칼각 정렬을 위해 div로 분리
 st.markdown("<div class='main-title'>루나 : 운명 설계사</div>", unsafe_allow_html=True)
 st.markdown("<div class='title-sub'>(문제해결 팩폭 상담소)</div>", unsafe_allow_html=True)
 
-# [서브 멘트] 팩폭 주의 강조
 st.markdown("""
 <div class='sub-header-text'>
     "혼자 끙끙 앓지 마세요."<br>
-    루나 언니가 당신의 미래와 해결책을 <b>냉정하고 확실하게</b> 알려줄게요.<br>
+    루나 언니가 당신의 미래를 <b>냉정하고 확실하게</b> 알려줄게요.<br>
     <span style='color: #FF6B6B; font-weight: bold;'>(※ 유리멘탈 주의 🚨)</span>
 </div>
 """, unsafe_allow_html=True)
 
-# [가격표] 클릭 시 스레드 이동 + 멘트 수정 완료
+# [가격표] 스레드 링크 연동 + 멘트 수정 완료
 st.markdown("""
 <a href="https://www.threads.net/@luna_fortune_2026" target="_blank" class="price-tag-link">
     <div class='price-tag'>
@@ -184,7 +183,6 @@ st.markdown("""
 # --- 입력 폼 (Input) ---
 col_main, col_dummy = st.columns([1, 0.01]) 
 with col_main:
-    # 메뉴
     topic = st.radio(
         "어떤 운명이 궁금한가요?",
         ["오늘의 운세 (Daily)", "🦄 2026년 1년 운세 (Yearly)"],
@@ -196,7 +194,8 @@ with col_main:
     
     c1, c2 = st.columns(2)
     with c1:
-        name = st.text_input("이름 (본명)", placeholder="예: 박경미")
+        # [수정] 예시 이름 변경 (박경미 -> 이루나)
+        name = st.text_input("이름 (본명)", placeholder="예: 이루나")
         gender = st.radio("성별", ["여성", "남성"], horizontal=True)
     with c2:
         birth_date = st.date_input("생년월일", min_value=datetime.date(1950, 1, 1), value=datetime.date(1990, 1, 1))
@@ -204,9 +203,8 @@ with col_main:
 
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # 버튼 멘트: 설렘 vs 냉정
     if "2026" in topic:
-        worry = st.text_input("지금 가장 꽉 막힌 문제는?", placeholder="예: 돈이 자꾸 새요, 남편이랑 자꾸 싸워요, 건강이 불안해요...")
+        worry = st.text_input("지금 가장 답답한 문제는?", placeholder="예: 남자친구 바람났어요, 남편이랑 자꾸 싸워요, 건강이 불안해요...")
         btn_text = "두근두근 💓 2026년 미리 보고, 인생 바꿀 '해결책' 찾으러 가자!"
     else:
         worry = st.text_input("오늘 컨디션이나 기분은?", placeholder="예: 이유 없이 불안함, 중요한 계약 앞둠...")
@@ -226,7 +224,7 @@ lucky_link = random.choice(lucky_bag)
 # --- 실행 로직 ---
 if st.button(btn_text, use_container_width=True):
     if not name:
-        st.warning("이름을 입력해야 진단서를 끊어드리죠. 얼른 적으세요.")
+        st.warning("이름을 입력해야 진단서를 끊어드리죠. 얼른 적어주세요.")
     elif not gemini_api_key:
         st.error("시스템 키 오류. 관리자에게 문의하세요.")
     else:
@@ -271,7 +269,8 @@ if st.button(btn_text, use_container_width=True):
                 # 결과 출력
                 st.markdown(f"<div class='letter-box'><h3>📋 {name}님을 위한 운명 진단서</h3>{response.text}</div>", unsafe_allow_html=True)
                 
-                # --- [수익화] 쇼핑 유도 황금 박스 (네가 원한 멘트 적용) ---
+                # --- [수익화] 쇼핑 유도 황금 박스 (HTML 버그 수정 완료) ---
+                # unsafe_allow_html=True가 이 블록에 적용되도록 확실하게 처리
                 st.markdown(f"""
                 <div class='prescription-box'>
                     <h3 style='color: #FF6B6B; margin:0; font-size:22px; font-weight:900;'>🚨 {name}님, 긴급 처방입니다!</h3>
@@ -302,6 +301,4 @@ if st.button(btn_text, use_container_width=True):
 
         except Exception as e:
             st.error(f"진단 요청이 폭주하여 시스템이 과열되었습니다. 잠시 후 다시 눌러주세요. ({e})")
-
-
 
