@@ -5,8 +5,8 @@ from korean_lunar_calendar import KoreanLunarCalendar
 import random
 
 # ==========================================
-# [PROJECT: LUNA - THE FINAL MASTERPIECE]
-# "사용자 수정 반영 + 들여쓰기 버그 픽스 + 모델명 안정화"
+# [PROJECT: LUNA - FINAL MASTERPIECE]
+# "깃허브 아이콘 완벽 제거 + 모든 기능 통합"
 # ==========================================
 
 st.set_page_config(
@@ -15,12 +15,12 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- [디자인] CSS 최종 보스 (꼬리표 제거 + 가독성 극대화 + 애니메이션) ---
+# --- [디자인] CSS 최종 보스 ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;500;700;900&display=swap');
     
-    /* 1. 기본 설정: 배경 블랙, 글씨 화이트(가독성 UP), 폰트 확대 */
+    /* 1. 기본 설정 */
     .stApp {
         background-color: #0E0E0E;
         color: #FFFFFF;
@@ -28,14 +28,35 @@ st.markdown("""
         font-size: 19px;
     }
     
-    /* 2. [강력해진 삭제] 스트림릿 꼬리표, 햄버거 메뉴, 깃허브 아이콘 완전 숨김 */
-    footer, header, [data-testid="stToolbar"], .stAppDeployButton, .viewerBadge_container__1QSob {
-        display: none !important;
+    /* 2. [핵폭탄급 삭제] 깃허브 아이콘, 햄버거 메뉴, 풋터 등 모든 꼬리표 제거 */
+    header, footer {
         visibility: hidden !important;
-        height: 0px !important;
+        display: none !important;
+    }
+    .stApp > header {
+        display: none !important;
+    }
+    div[data-testid="stToolbar"] {
+        display: none !important;
+    }
+    div[data-testid="stDecoration"] {
+        display: none !important;
+    }
+    div[data-testid="stStatusWidget"] {
+        display: none !important;
+    }
+    .viewerBadge_container__1QSob {
+        display: none !important;
+    }
+    #MainMenu {
+        display: none !important;
+    }
+    /* 상단 여백 최소화 */
+    .block-container {
+        padding-top: 2rem !important;
     }
 
-    /* 3. 제목 칼각 정렬 */
+    /* 3. 제목 스타일 */
     .main-title {
         color: #E5C17C;
         font-family: 'Noto Serif KR', serif;
@@ -54,61 +75,34 @@ st.markdown("""
         font-size: 1.5rem;
         margin-bottom: 25px;
     }
-    
-    /* 서브 헤더 멘트 */
     .sub-header-text {
-        text-align: center;
-        color: #CCCCCC;
-        font-size: 17px;
-        margin-bottom: 30px;
-        line-height: 1.6;
-        font-weight: 400;
-        word-break: keep-all;
+        text-align: center; color: #CCCCCC; font-size: 17px; margin-bottom: 30px;
+        line-height: 1.6; font-weight: 400; word-break: keep-all;
     }
 
-    /* 4. 가격표 (스레드 링크 연동) */
-    a.price-tag-link {
-        text-decoration: none;
-        display: block;
-        color: inherit; /* 링크 색상 상속 방지 */
-    }
+    /* 4. 가격표 스타일 */
+    a.price-tag-link { text-decoration: none; display: block; color: inherit; }
     .price-tag {
-        background: #161616;
-        border: 1px solid #D4AF37;
-        border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-        margin: 0 auto 30px auto;
-        max-width: 600px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        transition: transform 0.2s;
-        cursor: pointer;
+        background: #161616; border: 1px solid #D4AF37; border-radius: 12px;
+        padding: 20px; text-align: center; margin: 0 auto 30px auto; max-width: 600px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5); transition: transform 0.2s; cursor: pointer;
     }
     .price-tag:active { transform: scale(0.98); }
     .sale-price { color: #FFD700; font-weight: 900; font-size: 24px; }
 
-    /* 5. [수정] 입력폼 가독성 혁명 (라벨 흰색 + 예시 글씨 밝게) */
+    /* 5. 입력폼 가독성 */
     .stRadio label, .stDateInput label, .stTimeInput label, .stTextInput label, p {
-        color: #FFFFFF !important;
-        font-weight: 700 !important;
-        font-size: 18px !important;
+        color: #FFFFFF !important; font-weight: 700 !important; font-size: 18px !important;
     }
-    /* 입력창 예시 글씨(Placeholder) 밝게 수정 */
     ::placeholder { color: #CCCCCC !important; opacity: 1; }
-    :-ms-input-placeholder { color: #CCCCCC !important; }
-    ::-ms-input-placeholder { color: #CCCCCC !important; }
-
-    /* 입력창 디자인 */
     .stTextInput>div>div>input { 
         text-align: center; background-color: #222; color: #FFF; 
         border: 1px solid #555; height: 55px; font-size: 18px; border-radius: 8px;
     }
-    /* 실행 버튼 */
     .stButton>button {
         background: #222; color: #E5C17C; border: 1px solid #E5C17C;
         height: 70px; font-size: 20px; width: 100%; font-weight: bold; border-radius: 8px;
     }
-    .stButton>button:hover { background: #E5C17C; color: #000; border: none; }
 
     /* 6. 결과 박스 */
     .letter-box {
@@ -117,28 +111,25 @@ st.markdown("""
         margin-top: 30px; line-height: 1.9; font-size: 19px; color: #FAFAFA;
     }
     
-    /* 7. [핵심] 쇼핑 유도 황금 박스 & 애니메이션 최적화 */
+    /* 7. 황금박스 스타일 */
     .prescription-box {
         background-color: #1A1A1A; border: 2px solid #D4AF37; 
         padding: 25px; margin-top: 35px; text-align: center; border-radius: 12px;
         box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
     }
-    /* 심장박동 애니메이션 (최적화됨) */
     @keyframes pulse {
         0% { transform: scale(1); box-shadow: 0 5px 15px rgba(255, 140, 0, 0.4); }
         50% { transform: scale(1.03); box-shadow: 0 5px 25px rgba(255, 215, 0, 0.6); }
         100% { transform: scale(1); box-shadow: 0 5px 15px rgba(255, 140, 0, 0.4); }
     }
-    /* 링크 버튼 스타일 (애니메이션 적용 대상) */
     a.lucky-btn {
         display: block; width: 100%; background: linear-gradient(90deg, #FF8C00, #FFD700);
         color: #000000 !important; text-align: center; padding: 22px; font-size: 20px;
         font-weight: 900; border-radius: 10px; text-decoration: none; margin-top: 20px;
-        animation: pulse 1.5s ease-in-out infinite; /* 자연스러운 심박동 */
+        animation: pulse 1.5s ease-in-out infinite; 
         line-height: 1.4;
     }
     
-    /* 8. Footer 스타일 (회색, 흐리게) */
     .footer-text {
         text-align: center; color: #888; font-size: 12px; margin-top: 40px; 
         padding-bottom: 30px; line-height: 1.5; font-weight: 400 !important;
@@ -154,7 +145,7 @@ with st.sidebar:
     else:
         gemini_api_key = st.text_input("API Key 입력", type="password")
 
-# --- 메인 화면 (Header) ---
+# --- 메인 화면 ---
 st.markdown("<div class='main-title'>루나 : 운명 설계사</div>", unsafe_allow_html=True)
 st.markdown("<div class='title-sub'>(문제해결 팩폭 상담소)</div>", unsafe_allow_html=True)
 
@@ -166,7 +157,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# [가격표] 스레드 링크 연동 + 멘트 수정 완료
 st.markdown("""
 <a href="https://www.threads.net/@luna_fortune_2026" target="_blank" class="price-tag-link">
     <div class='price-tag'>
@@ -180,7 +170,7 @@ st.markdown("""
 </a>
 """, unsafe_allow_html=True)
 
-# --- 입력 폼 (Input) ---
+# --- 입력 폼 ---
 col_main, col_dummy = st.columns([1, 0.01]) 
 with col_main:
     topic = st.radio(
@@ -194,7 +184,6 @@ with col_main:
     
     c1, c2 = st.columns(2)
     with c1:
-        # [수정] 예시 이름 변경 (박경미 -> 이루나)
         name = st.text_input("이름 (본명)", placeholder="예: 이루나")
         gender = st.radio("성별", ["여성", "남성"], horizontal=True)
     with c2:
@@ -210,7 +199,6 @@ with col_main:
         worry = st.text_input("오늘 컨디션이나 기분은?", placeholder="예: 이유 없이 불안함, 중요한 계약 앞둠...")
         btn_text = "⚡ 오늘 내 기운, 냉정하게 확인하러 가기!"
 
-# 쿠팡 링크
 lucky_bag = [
     "https://link.coupang.com/a/c7U5ic", "https://link.coupang.com/a/c7Vcxs", 
     "https://link.coupang.com/a/c7VexJ", "https://link.coupang.com/a/c7VfKc", 
@@ -235,42 +223,23 @@ if st.button(btn_text, use_container_width=True):
             
             prompt = f"""
             [System Role]
-            Act as 'Luna', a sharp, insightful fortune consultant (The 'Unnie' who gives Fact-bombs).
-            Target Audience: 20s-60s.
-            Tone: 
-            - Polite but Hitting the Bone (예의는 지키되 팩트는 정확하게).
-            - Use metaphors like "Fire needs Water" to explain Saju easily.
-            - Focus on "Problem Solving".
-            
+            Act as 'Luna', a sharp, insightful fortune consultant.
+            Tone: Polite but Fact-bombing.
             [User Info]
             Name: {name} ({gender}), Birth: {birth_date} (Lunar: {lunar_date})
             Topic: {topic}, Worry: {worry}
-            
-            [Structure of Response]
-            1. **🛑 팩트 진단 (Diagnosis)**: 
-               - Start with a shock/hook. e.g., "{name}님, 솔직히 말할게요. 지금 속이 숯검정이시네요."
-               - Analyze their Saju elements directly linked to their worry.
-            
-            2. **📉 미래 예측 (Prognosis)**:
-               - If they don't change, what happens in 2026? Be realistic.
-            
-            3. **💊 루나의 솔루션 (Solution)**:
-               - Provide a clear, actionable solution.
-               - **Bridge to the Item:** Connect the solution to a specific element/item they need.
-               - e.g., "You need Water energy urgently. You must carry this specific item to survive."
+            [Structure]
+            1. Diagnosis (Shock) 2. Prognosis (Realistic) 3. Solution (Actionable)
             """
             
             with st.spinner(f"⚡ {name}님의 사주를 냉철하게 스캔 중입니다..."):
                 genai.configure(api_key=gemini_api_key)
-                # [수정] 모델명을 안정적인 2.5-flash로 변경 (2.5는 에러 가능성 높음)
                 model = genai.GenerativeModel("gemini-2.5-flash")
                 response = model.generate_content(prompt)
                 
-                # 결과 출력
                 st.markdown(f"<div class='letter-box'><h3>📋 {name}님을 위한 운명 진단서</h3>{response.text}</div>", unsafe_allow_html=True)
                 
-                # --- [핵심 수정] 황금박스 HTML 들여쓰기 제거 (왼쪽 벽에 붙임) ---
-                # 주의: 아래 HTML은 절대 들여쓰지 마세요!
+                # HTML 들여쓰기 제거 완료 (왼쪽 벽에 붙임)
                 st.markdown(f"""
 <div class='prescription-box'>
 <h3 style='color: #FF6B6B; margin:0; font-size:22px; font-weight:900;'>🚨 {name}님, 긴급 처방입니다!</h3>
@@ -289,7 +258,6 @@ if st.button(btn_text, use_container_width=True):
 </div>
 """, unsafe_allow_html=True)
                 
-                # --- [Footer] 들여쓰기 제거 ---
                 st.markdown("""
 <div class='footer-text'>
 이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.<br>
