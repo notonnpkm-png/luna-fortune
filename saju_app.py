@@ -5,130 +5,128 @@ from korean_lunar_calendar import KoreanLunarCalendar
 import random
 
 # ==========================================
-# [PROJECT: LUNA - FINAL PERFECT VERSION]
-# "마크 완전 박멸 + 고대비 가독성 + 킬링 멘트 장착"
+# [PROJECT: LUNA - THE FINAL MASTERPIECE]
+# "완벽한 디자인 + 사회 언니 페르소나 + 마크 박멸"
 # ==========================================
 
-# 1. 페이지 설정 (반드시 코드 맨 윗줄)
+# 1. 페이지 기본 설정 (무조건 맨 위)
 st.set_page_config(
-    page_title="루나 : 운명 설계사", 
-    page_icon="🔮", 
+    page_title="루나 : 운명 상담소",
+    page_icon="🔮",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# 2. [천재 쌤의 디자인 솔루션] CSS (수정 금지)
+# 2. [디자인] CSS 최종 보스 (수정 금지)
 st.markdown("""
 <style>
-    /* 폰트 불러오기 */
+    /* 폰트 불러오기 (명조체) */
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;500;700;900&display=swap');
     
-    /* 전체 폰트 및 스타일 설정 (시니어 가독성 UP) */
+    /* 전체 기본 폰트 설정 */
     html, body, [class*="css"] {
         font-family: 'Noto Serif KR', serif;
-        font-size: 22px !important; 
+        font-size: 20px !important; 
         font-weight: 500;
     }
 
-    /* 배경 리얼 블랙 */
+    /* 배경: 리얼 블랙 */
     .stApp {
         background-color: #0E0E0E;
         color: #FFFFFF;
     }
     
     /* --------------------------------------------------------
-       [1] 끈질긴 마크/배지 완벽 제거 (Wildcard Hack)
+       [1] 방해꾼들(아이콘/배지) 핵폭탄 삭제 구역
        -------------------------------------------------------- */
     
-    /* 헤더, 툴바, 데코레이션 삭제 */
+    /* 상단 헤더, 툴바, 데코레이션 삭제 */
     header, [data-testid="stHeader"], [data-testid="stToolbar"], [data-testid="stDecoration"] {
         display: none !important;
         visibility: hidden !important;
         height: 0 !important;
     }
 
-    /* 우측 상단 뷰어 배지 (이름이 뭐든 'viewerBadge'가 포함되면 삭제) */
-    div[class*="viewerBadge"] {
+    /* 우측 상단 뷰어 배지 (Avatar Icon) - 와일드카드로 강력 삭제 */
+    div[class*="viewerBadge"], .viewerBadge_container__1QSob {
         display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
     }
     
-    /* 하단 푸터 및 Deploy 버튼 삭제 */
-    footer, .stAppDeployButton {
+    /* 우측 하단 'Streamlit' 아이콘 (Running Man) & 상태 위젯 */
+    [data-testid="stStatusWidget"], footer, .stAppDeployButton {
         display: none !important;
         visibility: hidden !important;
     }
     
     /* 상단 여백 제거 (화면 꽉 차게) */
     .block-container {
-        padding-top: 1rem !important;
+        padding-top: 2rem !important;
         padding-bottom: 5rem !important;
     }
 
     /* --------------------------------------------------------
-       [2] 입력창 가독성 심폐소생술 (고대비 모드)
+       [2] 텍스트 가독성 (제자님 지침 완벽 반영)
        -------------------------------------------------------- */
     
-    /* 질문(Label)은 무조건 흰색 & 크게 */
-    .stTextInput label, .stDateInput label, .stTimeInput label, .stRadio label {
+    /* 카테고리 제목 (이름, 생년월일 등) -> 진한 흰색 + 굵게 */
+    .stTextInput label, .stDateInput label, .stTimeInput label, .stRadio label, div[role="radiogroup"] label p {
         color: #FFFFFF !important;
-        font-size: 20px !important;
-        font-weight: bold !important;
+        font-size: 19px !important;
+        font-weight: 700 !important; /* Bold */
     }
     
-    /* 입력 예시(Placeholder)는 밝은 회색으로 잘 보이게 */
+    /* 입력 예시 (Placeholder) -> 흰색 + 굵기 보통 */
     input::placeholder {
-        color: #AAAAAA !important; 
-        opacity: 1 !important;
+        color: #FFFFFF !important; 
+        opacity: 0.7 !important; /* 너무 쨍하면 헷갈리니 살짝 투명도 */
+        font-weight: 400 !important; /* Normal */
     }
     
     /* 입력칸 디자인 */
     .stTextInput input, .stDateInput input, .stTimeInput input {
         background-color: #222 !important; 
         color: #FFF !important; 
-        border: 2px solid #666 !important;
-        height: 65px !important;
-        font-size: 22px !important;
+        border: 2px solid #555 !important;
+        height: 60px !important;
+        font-size: 20px !important;
         border-radius: 10px;
         text-align: center;
-    }
-    
-    /* 라디오 버튼 글씨 */
-    div[role="radiogroup"] label p {
-        font-size: 22px !important;
-        font-weight: bold !important;
     }
 
     /* --------------------------------------------------------
        [3] UI 컴포넌트 디자인
        -------------------------------------------------------- */
     
-    /* 메인 타이틀 */
+    /* 메인 타이틀 (모바일에서 잘리지 않게 사이즈 축소) */
     .main-title {
         color: #E5C17C;
         font-weight: 900;
         text-align: center;
-        font-size: 3rem;
+        font-size: 2.2rem; /* 3.0rem -> 2.2rem 축소 */
         margin-bottom: 5px;
-        text-shadow: 0 0 20px rgba(229, 193, 124, 0.4);
+        text-shadow: 0 0 15px rgba(229, 193, 124, 0.3);
+        word-break: keep-all; /* 단어 단위 줄바꿈 */
     }
     .sub-title {
         color: #BBB;
         text-align: center;
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         margin-bottom: 30px;
     }
     
     /* 실행 버튼 */
     .stButton > button {
         width: 100%;
-        background-color: #333;
+        background-color: #222;
         color: #E5C17C;
         border: 2px solid #E5C17C;
-        height: 80px !important;
-        font-size: 24px !important;
+        height: 75px !important;
+        font-size: 22px !important;
         font-weight: 900;
         border-radius: 12px;
-        margin-top: 20px;
+        margin-top: 10px;
     }
     .stButton > button:hover {
         background-color: #E5C17C;
@@ -144,7 +142,7 @@ st.markdown("""
     }
     .golden-box {
         background-color: #1A1A1A;
-        border: 3px solid #D4AF37;
+        border: 2px solid #D4AF37;
         border-radius: 15px;
         padding: 30px;
         margin-top: 40px;
@@ -157,8 +155,8 @@ st.markdown("""
         background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
         color: #000 !important;
         font-weight: 900;
-        font-size: 22px;
-        padding: 25px 0;
+        font-size: 21px;
+        padding: 22px 0;
         border-radius: 12px;
         text-decoration: none;
         margin-top: 20px;
@@ -166,12 +164,12 @@ st.markdown("""
     }
     
     .footer-note {
-        font-size: 14px; color: #777; text-align: center; margin-top: 60px;
+        font-size: 13px; color: #666; text-align: center; margin-top: 60px;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# --- 사이드바 (API 키 관리) ---
+# --- 사이드바 (API 키 관리 - 평소엔 안 보임) ---
 with st.sidebar:
     if "GEMINI_API_KEY" in st.secrets:
         gemini_api_key = st.secrets["GEMINI_API_KEY"]
@@ -182,7 +180,7 @@ with st.sidebar:
 st.markdown("<div class='main-title'>루나 : 운명 상담소</div>", unsafe_allow_html=True)
 st.markdown("<div class='sub-title'>(사이다 버전 🥤)</div>", unsafe_allow_html=True)
 
-# 인트로
+# 인트로 (공감 + 팩폭 예고)
 st.markdown("""
 <div style='text-align: center; margin-bottom: 30px; line-height: 1.6; font-size: 18px; color: #DDD;'>
     "혼자 끙끙 앓지 마요."<br>
@@ -192,13 +190,13 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# 가격표 (복채 유도 멘트 수정됨)
+# 가격표 (제자님 요청 멘트 적용)
 st.markdown("""
 <a href="https://www.threads.net/@luna_fortune_2026" target="_blank" style="text-decoration:none;">
     <div style="background:#181818; border:1px solid #444; border-radius:15px; padding:20px; text-align:center; margin-bottom:40px;">
-        <span style="color:#777; text-decoration:line-through; font-size:18px;">상담료 50,000원</span><br>
-        <span style="color:#FFD700; font-size:26px; font-weight:bold;">✨ 지금만 무료 (0원)</span><br>
-        <div style="margin-top:15px; color:#EEE; font-size:18px;">
+        <span style="color:#777; text-decoration:line-through; font-size:16px;">상담료 50,000원</span><br>
+        <span style="color:#FFD700; font-size:24px; font-weight:bold;">✨ 지금만 무료 (0원)</span><br>
+        <div style="margin-top:15px; color:#EEE; font-size:16px;">
             ⚠️ <b>주의:</b> 복채 대신 <b>'팔로우', '댓글'</b>은 필수!!<br>
             <span style="color:#FFD700;">(복채 안내면 상담 효과없는거 아시죠?^^)</span>
         </div>
@@ -231,13 +229,13 @@ birth_time = st.time_input("태어난 시간 (모르면 패스)", datetime.time(
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# 고민 입력창 (예시 문구 대폭 수정됨)
+# 고민 입력창 (제자님 확정 자극적 예시 적용)
 if "2026" in topic:
     worry = st.text_input("가장 큰 고민은?", placeholder="예: 남편이 바람난거같아요, 돈을 언제 벌수있을까요?, 친구랑 계속 싸워요")
     btn_label = "두근두근 💓 2026년 미리 보고 해결책 찾기!"
 else:
     worry = st.text_input("오늘 기분은?", placeholder="예: 소개팅 하는데 잘 될까요? 면접이 있어요.")
-    # 버튼 멘트 수정됨 (오늘 나에게 닥칠 운세 미리보기)
+    # 버튼 멘트 (확정)
     btn_label = "⚡ 오늘 나에게 닥칠 운세 미리보기"
 
 # --- 랜덤 행운템 리스트 ---
@@ -263,19 +261,29 @@ if st.button(btn_label):
             calendar.setSolarDate(birth_date.year, birth_date.month, birth_date.day)
             lunar_date = calendar.LunarIsoFormat()
             
+            # --- [핵심] 40대 사회 언니 페르소나 프롬프트 ---
             prompt = f"""
             [Role]
-            Act as 'Luna', a charismatic fortune teller.
+            You are 'Luna', a 40-something female fortune consultant. 
+            You are like a close, experienced 'older sister' (Unnie) who gives realistic advice.
+            
+            [Tone & Manner]
+            - Use polite Korean 'Haeyo-che' (해요체). e.g., "~했군요.", "~그랬겠어요."
+            - Do NOT use plain form (Banmal) like "했어", nor overly formal "Hapshow-che".
+            - **Phase 1 (Empathy):** Start with deep empathy. Use phrases like "Aigo...", "You must have been so stressed...", "I understand your frustration."
+            - **Phase 2 (Analysis):** Be objective and sharp here. "But realistically...", "Looking at your fortune...", "Don't deceive yourself."
+            - **Phase 3 (Solution):** Give clear, actionable advice. Support them warmly at the end.
+            
             [User Info]
-            Name: {name} ({gender}), Birth: {birth_date} (Lunar: {lunar_date})
-            Topic: {topic}, Worry: {worry}
-            [Guideline]
-            Tone: Friendly but Fact-bombing. Use Korean.
-            Structure: 
-            1. Current State (Shocking accuracy) 
-            2. Future Prediction (What will happen)
-            3. Actionable Solution (Clear advice).
-            Use emojis.
+            Name: {name} ({gender})
+            Birth: {birth_date} (Lunar: {lunar_date})
+            Topic: {topic}
+            Concern: {worry}
+            
+            [Output Structure]
+            1. ❤️ 따뜻한 위로와 공감 (First, comfort the user deeply regarding their concern)
+            2. ⚡ 냉정한 운명 분석 (Analyze the Pros and Cons based on Saju/Fortune)
+            3. 💊 언니의 현실 처방 (Actionable advice & warm closing)
             """
             
             with st.spinner("⚡ 루나 언니가 운명 스캔 중... (심장이 쿵!)"):
@@ -283,7 +291,7 @@ if st.button(btn_label):
                 model = genai.GenerativeModel("gemini-2.5-flash")
                 response = model.generate_content(prompt)
                 
-                # 결과 박스
+                # 결과 박스 (가독성 UP)
                 st.markdown(f"""
                 <div style="background-color:#121212; border:1px solid #333; border-radius:15px; padding:25px; margin-top:30px; line-height:1.8;">
                     <h3 style="color:#E5C17C; border-bottom:1px solid #333; padding-bottom:10px;">📜 {name}님 운명 분석표</h3>
