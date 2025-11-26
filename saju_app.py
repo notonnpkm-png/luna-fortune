@@ -8,7 +8,7 @@ from korean_lunar_calendar import KoreanLunarCalendar
 # "스레드 연동 + 자동 호칭 + 2026년 대비 + 완벽한 수익화"
 # ==========================================
 
-st.set_page_config(page_title="루나: 미래 상담사", page_icon="🌙", layout="wide")
+st.set_page_config(page_title="루나: 미래상담사", page_icon="🌙", layout="wide")
 
 # --- 스타일링 (힙한 블랙 & 핫핑크) ---
 st.markdown("""
@@ -170,4 +170,5 @@ if st.button(btn_text, use_container_width=True):
 
         except Exception as e:
             st.error(f"아오.. 서버가 말을 안 듣네. 다시 눌러봐. (Error: {e})")
+
 
