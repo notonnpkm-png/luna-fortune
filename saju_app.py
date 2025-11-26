@@ -5,7 +5,7 @@ from korean_lunar_calendar import KoreanLunarCalendar
 
 # ==========================================
 # [PROJECT: 루나 언니 - FINAL MASTERPIECE]
-# "자동 호칭(언니/누나) + 다정함 + 2026년 대비 + 완벽한 수익화"
+# "스레드 연동 + 자동 호칭 + 2026년 대비 + 완벽한 수익화"
 # ==========================================
 
 st.set_page_config(page_title="루나: 미래 상담사", page_icon="🌙", layout="wide")
@@ -30,16 +30,38 @@ st.markdown("""
 # --- 사이드바: 설정 ---
 with st.sidebar:
     st.header("💋 루나 언니 대기실")
-    gemini_api_key = st.text_input("상담권(API Key) 내놔", type="password")
+    
+    # [복채 배너] 스레드 팔로우 유도
+    st.markdown("""
+    <div style='background-color: #330019; padding: 15px; border-radius: 10px; border: 1px solid #FF007F;'>
+        <p style='color: white; font-weight: bold; margin: 0; font-size: 16px;'>💸 복채는 돈 대신 받는다.</p>
+        <p style='color: #FF007F; font-size: 14px; margin-top: 10px; line-height: 1.5;'>
+        <b>'팔로우'</b>하고 <b>'댓글'</b> 남겨야<br>
+        점괘 약발 더 잘 받는 거 알지? 😉<br>
+        (필수니까 얼른 하고 와!)
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # [링크] 자네의 루나 계정으로 연결 (주소 수정 완료)
+    sns_link = "https://www.threads.net/@luna_fortune_2026" 
+    st.link_button("💖 약발 받으러 가기 (Click)", sns_link)
+
+    # [자동 로그인] Secrets에서 키 가져오기
+    if "GEMINI_API_KEY" in st.secrets:
+        gemini_api_key = st.secrets["GEMINI_API_KEY"]
+    else:
+        gemini_api_key = st.text_input("상담권(API Key) 내놔", type="password")
     
     st.divider()
-    model_option = st.radio("언니 컨디션", ["🔥 풀파워 (Pro)", "⚡ 급속 (Flash)"])
     
-    # [깨끗한 코드] 화살표나 한글 설명 없이 이렇게만 적어야 한다!
+    # [모델 선택] 안정적인 1.5 버전 사용
+    model_option = st.radio("언니 컨디션", ["🔥 풀파워 (Pro)", "⚡ 급속 (Flash)"])
     if "Pro" in model_option:
         selected_model = "gemini-2.5-pro"
     else:
         selected_model = "gemini-2.5-flash"
+
 # --- 메인 로직 ---
 st.title("💋 2026년 미리보기: 🌙루나 미래 상담사")
 st.markdown("### \"우리 동생, 2025년 고생했어. 이제 2026년 준비해야지?\"")
@@ -63,12 +85,12 @@ with col2:
 # [중요] 주제에 따른 질문 & 수익화 링크 자동 변경
 if "2026" in topic:
     worry = st.text_input("내년에 뭐가 제일 걱정돼?", placeholder="돈, 연애, 건강... 솔직히 말해.")
-    # 2026년 대비용 다이어리/플래너 링크 (나중에 자네 링크로 교체)
+    # 2026년 대비용 다이어리/플래너 링크 (나중에 자네 파트너스 링크로 교체)
     lucky_link = "https://www.coupang.com/np/search?component=&q=2026년다이어리" 
     btn_text = "🦄 2026년 내 운명 팩트체크 하기 (Click)"
 else:
     worry = st.text_input("오늘 기분 어때?", placeholder="꿀꿀해, 불안해...")
-    # 가벼운 코디/소품 링크 (나중에 자네 링크로 교체)
+    # 가벼운 코디/소품 링크 (나중에 자네 파트너스 링크로 교체)
     lucky_link = "https://www.coupang.com/np/search?component=&q=행운의키링" 
     btn_text = "📅 오늘 하루, 언니한테 점검받기 (Click)"
 
@@ -76,7 +98,7 @@ else:
 # --- 버튼 클릭 시 실행 ---
 if st.button(btn_text, use_container_width=True):
     if not gemini_api_key:
-        st.error("잠깐! 왼쪽 사이드바에 키(Key) 넣어야 언니가 보인다.")
+        st.error("잠깐! 왼쪽 사이드바에 키(Key)가 없잖아. (서버 설정 확인 필요)")
     else:
         try:
             # 1. 음력 변환
@@ -84,7 +106,7 @@ if st.button(btn_text, use_container_width=True):
             calendar.setSolarDate(birth_date.year, birth_date.month, birth_date.day)
             lunar_date = calendar.LunarIsoFormat()
             
-            # 2. 날짜 고정 (2025년 말로 설정하여 2026년 예측 자연스럽게)
+            # 2. 날짜 고정
             current_date_str = "2025년 11월 26일"
             
             # 3. [지능형 호칭 시스템] 여자->언니, 남자->누나
