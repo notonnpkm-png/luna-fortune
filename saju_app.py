@@ -1,3 +1,4 @@
+import random
 import streamlit as st
 import google.generativeai as genai
 import datetime
@@ -58,7 +59,7 @@ sns_link = "https://www.threads.net/@luna_fortune_2026"
 st.markdown(f"""
 <a href="{sns_link}" target="_blank" style="text-decoration: none;">
     <div class="follow-box">
-        <p style='color: white; font-weight: bold; margin: 0; font-size: 18px;'>💸 복채는 돈 대신 '팔로우'로 받는다.</p>
+        <p style='color: white; font-weight: bold; margin: 0; font-size: 18px;'>💸 복채는 돈 대신 '팔로우,댓글글'로 받는다.</p>
         <p style='color: #FF007F; font-size: 14px; margin-top: 5px;'>
         (터치해서 약발 받으러 가기 👆)
         </p>
@@ -86,11 +87,38 @@ with col2:
 # 질문 & 링크 설정
 if "2026" in topic:
     worry = st.text_input("내년에 뭐가 제일 걱정돼?", placeholder="돈, 연애, 건강... 솔직히 말해.")
-    lucky_link = "https://www.coupang.com/np/search?component=&q=2026년다이어리" 
+   lucky_bag_2026 = [ = "https://link.coupang.com/a/c7U5ic", # 행운 키링
+                        "https://link.coupang.com/a/c7Vcxs", # 행운 팔찌
+                        "https://link.coupang.com/a/c7VexJ", # 행운 반지
+                        "https://link.coupang.com/a/c7VfKc", # 행운 다이어리
+                        "https://link.coupang.com/a/c7Vhmc", # 행운 은반지
+                        "https://link.coupang.com/a/c7VinT",# 행운 목걸이
+                        "https://link.coupang.com/a/c7Vkbn", # 행운 양말
+                        "https://link.coupang.com/a/c7Vk67",# 행운 목도리
+                        "https://link.coupang.com/a/c7Vmq1", # 행운 펜
+                        "https://link.coupang.com/a/c7VncA", # 행운 소품
+                        "https://link.coupang.com/a/c7VoiP", # 행운 소품
+                      ]
+    lucky_link = random.choice(lucky_bag_2026) # 주머니에서 하나 랜덤 뽑기!
+               
     btn_text = "🦄 2026년 내 운명 팩트체크 하기 (Click)"
 else:
     worry = st.text_input("오늘 기분 어때?", placeholder="꿀꿀해, 불안해...")
-    lucky_link = "https://www.coupang.com/np/search?component=&q=행운의키링" 
+    
+   lucky_bag_today = [ = "https://link.coupang.com/a/c7U5ic", # 행운 키링
+                        "https://link.coupang.com/a/c7Vcxs", # 행운 팔찌
+                        "https://link.coupang.com/a/c7VexJ", # 행운 반지
+                        "https://link.coupang.com/a/c7VfKc", # 행운 다이어리
+                        "https://link.coupang.com/a/c7Vhmc", # 행운 은반지
+                        "https://link.coupang.com/a/c7VinT",# 행운 목걸이
+                        "https://link.coupang.com/a/c7Vkbn", # 행운 양말
+                        "https://link.coupang.com/a/c7Vk67",# 행운 목도리
+                        "https://link.coupang.com/a/c7Vmq1", # 행운 펜
+                        "https://link.coupang.com/a/c7VncA", # 행운 소품
+                        "https://link.coupang.com/a/c7VoiP", # 행운 소품
+                      ]
+    lucky_link = random.choice(lucky_bag_today) # 주머니에서 하나 랜덤 뽑기!
+    
     btn_text = "📅 오늘 하루, 언니한테 점검받기 (Click)"
 
 
@@ -147,5 +175,6 @@ if st.button(btn_text, use_container_width=True):
 
         except Exception as e:
             st.error(f"에러 났다: {e}")
+
 
 
