@@ -277,17 +277,17 @@ if st.button(btn_label):
     elif not gemini_api_key:
         st.error("⚠️ API 키가 없어요. 관리자에게 문의하세요.")
     else:
+        # [수정] 안전을 위해 호칭 설정 로직을 try 밖으로 이동 (에러 발생 시에도 변수가 살아있도록)
+        if gender == "남성":
+            my_title = "누나"
+        else:
+            my_title = "언니"
+
         try:
             calendar = KoreanLunarCalendar()
             calendar.setSolarDate(birth_date.year, birth_date.month, birth_date.day)
             lunar_date = calendar.LunarIsoFormat()
             
-            # [수정] 성별에 따른 호칭 동적 설정 (남성 -> 누나, 여성 -> 언니)
-            if gender == "남성":
-                my_title = "누나"
-            else:
-                my_title = "언니"
-
             # --- [핵심] 40대 찐언니/누나 페르소나 (V2: 스레드 감성 완벽 이식) ---
             prompt = f"""
             [Role]
@@ -299,7 +299,7 @@ if st.button(btn_label):
             
             [Tone & Manner - "Thread Style"]
             1. **Speech Level:** Use "Banmal" (Informal/Casual Korean) for the entire conversation like a close sister. (e.g., "왔어?", "그랬구나.", "이건 진짜 아니야.")
-            2. **Addressing Rule (CRITICAL):** - Even though you use Banmal, **ALWAYS address the user as "{FirstName}님"** (Remove the surname and add '님').
+            2. **Addressing Rule (CRITICAL):** - Even though you use Banmal, **ALWAYS address the user as "{name}에서 성 빼고 이름+님"** (Remove the surname and add '님').
                - **Example:** If input is "박경미", call her **"경미님"** (NOT "경미야", NOT "박경미씨", NOT "박경미님").
                - Mix with "우리 동생".
                - **Opening:** "우리 동생, {name}에서 성 빼고 이름+님 왔어?" (e.g. "우리 동생, 경미님 왔어?")
@@ -340,7 +340,7 @@ if st.button(btn_label):
             
             with st.spinner(f"⚡ 루나 {my_title}가 신기 돋는 눈으로 스캔 중... (찌릿!)"):
                 genai.configure(api_key=gemini_api_key)
-                model = genai.GenerativeModel("gemini-2.5-flash")
+                model = genai.GenerativeModel("gemini-2.5-flash") # Pro 대신 Flash 모델 사용 (속도/안정성 UP)
                 response = model.generate_content(prompt)
                 
                 # 결과 박스 (가독성 UP + 제목 줄바꿈 방지)
@@ -370,12 +370,6 @@ if st.button(btn_label):
                 """, unsafe_allow_html=True)
 
         except Exception as e:
-            st.error(f"접속자가 많아 루나 {my_title}가 바쁘네요! 잠시 후 다시 눌러주세요.")
-
-# 하단 문구
-st.markdown("""
-<div class="footer-note">
-    이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.<br>
-    (무료 상담 서비스를 유지하는 데 사용됩니다.)
-</div>
-""", unsafe_allow_html=True)
+            # [수정] 단순 에러 멘트 대신, 진짜 에러 내용을 출력하여 디버깅 가능하게 변경
+            st.error(f"오류가 발생했습니다: {e}")
+            st.warning("잠시 후 다시 시도해주세요. 계속 문제가 생기면 관리자에게 이 오류 메시지를 보여주세요.")
