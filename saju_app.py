@@ -5,8 +5,8 @@ from korean_lunar_calendar import KoreanLunarCalendar
 import random
 
 # ==========================================
-# [PROJECT: LUNA - FINAL MOBILE MASTERPIECE]
-# "모바일 가독성 최적화 + 팩폭/설렘 멘트 + 수익화 완결"
+# [PROJECT: LUNA - THE FINAL MASTERPIECE]
+# "디자인, 가독성, 수익화, 멘트, 기능 완벽 통합본"
 # ==========================================
 
 st.set_page_config(
@@ -15,42 +15,64 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- [디자인] 모바일 최적화 & 시선 강탈 CSS ---
+# --- [디자인] CSS 최종 보스 (가독성 혁명 + 꼬리표 제거) ---
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;500;700;900&display=swap');
     
-    /* 1. 배경 및 기본 폰트 설정 (4060 가독성 위해 폰트 키움) */
+    /* 1. 기본 설정: 배경 블랙, 글씨 화이트(가독성 UP), 폰트 확대 */
     .stApp {
-        background-color: #0E0E0E; /* 깊은 블랙 */
-        color: #FFFFFF; /* 완전한 화이트 (가독성 최우선) */
+        background-color: #0E0E0E;
+        color: #FFFFFF;
         font-family: 'Noto Serif KR', serif;
-        font-size: 19px; /* 기본 폰트 확대 */
+        font-size: 19px;
     }
     
-    /* 2. 헤더 스타일 (모바일에서도 줄바꿈 예쁘게) */
-    h1 {
+    /* 2. 스트림릿 꼬리표 및 불필요한 요소 완전 제거 */
+    footer, header[data-testid="stHeader"], .st-emotion-cache-12fmzuu, .st-emotion-cache-13ln4jf {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    .viewerBadge_container__1QSob, .stAppDeployButton, #MainMenu {
+        display: none !important;
+    }
+
+    /* 3. 제목 칼각 정렬 (두 줄 분리 후 중앙 정렬) */
+    .main-title {
         color: #E5C17C;
         font-family: 'Noto Serif KR', serif;
         font-weight: 900;
         text-align: center;
-        margin-bottom: 15px;
-        font-size: 2.3rem; /* 모바일에서 너무 크지 않게 조정 */
-        line-height: 1.3;
+        margin-bottom: 5px;
+        font-size: 2.3rem;
+        line-height: 1.2;
         text-shadow: 0 2px 10px rgba(229, 193, 124, 0.2);
     }
-    
-    .sub-header {
+    .title-sub {
+        color: #E5C17C;
+        font-family: 'Noto Serif KR', serif;
+        font-weight: 700;
         text-align: center;
-        color: #CCCCCC; /* 밝은 회색으로 가독성 확보 */
+        font-size: 1.5rem;
+        margin-bottom: 25px;
+    }
+    
+    /* 서브 헤더 멘트 */
+    .sub-header-text {
+        text-align: center;
+        color: #CCCCCC;
         font-size: 17px;
         margin-bottom: 30px;
         line-height: 1.6;
         font-weight: 400;
-        word-break: keep-all; /* 단어 중간에 끊기지 않게 */
+        word-break: keep-all;
     }
 
-    /* 3. 가격표 (황금 박스) */
+    /* 4. 가격표 (스레드 링크 연동 + 클릭 효과) */
+    a.price-tag-link {
+        text-decoration: none;
+        display: block;
+    }
     .price-tag {
         background: #161616;
         border: 1px solid #D4AF37;
@@ -60,69 +82,45 @@ st.markdown("""
         margin: 0 auto 30px auto;
         max-width: 600px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        transition: transform 0.2s;
+        cursor: pointer;
     }
-    .sale-price { 
-        color: #FFD700; 
-        font-weight: 900; 
-        font-size: 24px; 
-    }
+    .price-tag:active { transform: scale(0.98); }
+    .sale-price { color: #FFD700; font-weight: 900; font-size: 24px; }
 
-    /* 4. 입력창 및 버튼 (엄지손가락 터치하기 편하게 큼직하게) */
-    .stTextInput>div>div>input { 
-        text-align: center; 
-        background-color: #222; 
-        color: #FFF; 
-        border: 1px solid #555; 
-        height: 55px; /* 높이 확보 */
-        font-size: 18px;
-        border-radius: 8px;
-    }
-    /* 라디오 버튼 폰트 키우기 */
-    .stRadio label {
+    /* 5. 입력폼 가독성 혁명 (회색 글씨 -> 진한 흰색) */
+    .stRadio label, .stDateInput label, .stTimeInput label, .stTextInput label, p {
+        color: #FFFFFF !important;
+        font-weight: 700 !important;
         font-size: 18px !important;
     }
+    /* 라디오 버튼 선택 항목 색상 */
+    div[data-baseweb="radio"] > div { color: #FFF !important; }
 
-    /* 실행 버튼 스타일 (기본 버튼) */
+    /* 입력창 및 버튼 디자인 */
+    .stTextInput>div>div>input { 
+        text-align: center; background-color: #222; color: #FFF; 
+        border: 1px solid #555; height: 55px; font-size: 18px; border-radius: 8px;
+    }
     .stButton>button {
-        background: #222; 
-        color: #E5C17C; 
-        border: 1px solid #E5C17C;
-        height: 70px; /* 터치 영역 확대 */
-        font-size: 20px; 
-        width: 100%; 
-        font-weight: bold;
-        border-radius: 8px;
+        background: #222; color: #E5C17C; border: 1px solid #E5C17C;
+        height: 70px; font-size: 20px; width: 100%; font-weight: bold; border-radius: 8px;
     }
-    .stButton>button:hover { 
-        background: #E5C17C; 
-        color: #000; 
-        border: none; 
-    }
+    .stButton>button:hover { background: #E5C17C; color: #000; border: none; }
 
-    /* 5. 결과 박스 (가독성: 흰 글씨 + 줄간격 넓게) */
+    /* 6. 결과 박스 */
     .letter-box {
-        background-color: #121212; 
-        padding: 30px; 
-        border-radius: 10px;
-        border: 1px solid #333; 
-        border-top: 5px solid #D4AF37; 
-        margin-top: 30px; 
-        line-height: 1.9; /* 줄 간격 시원하게 */
-        font-size: 19px; /* 글씨 큼직하게 */
-        color: #FAFAFA;
+        background-color: #121212; padding: 30px; border-radius: 10px;
+        border: 1px solid #333; border-top: 5px solid #D4AF37; 
+        margin-top: 30px; line-height: 1.9; font-size: 19px; color: #FAFAFA;
     }
     
-    /* 6. [핵심] 쇼핑 유도 황금 박스 & 버튼 애니메이션 */
+    /* 7. 쇼핑 유도 황금 박스 & 애니메이션 */
     .prescription-box {
-        background-color: #1A1A1A; 
-        border: 2px solid #D4AF37; 
-        padding: 25px; 
-        margin-top: 35px; 
-        text-align: center; 
-        border-radius: 12px;
+        background-color: #1A1A1A; border: 2px solid #D4AF37; 
+        padding: 25px; margin-top: 35px; text-align: center; border-radius: 12px;
         box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
     }
-
     /* 심장박동 애니메이션 */
     @keyframes pulse {
         0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); transform: scale(1); }
@@ -130,58 +128,57 @@ st.markdown("""
         70% { box-shadow: 0 0 0 15px rgba(255, 107, 107, 0); }
         100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); transform: scale(1); }
     }
-
-    /* 링크 버튼 (강렬한 오렌지/골드 그라데이션) */
+    /* 링크 버튼 스타일 */
     a.lucky-btn {
-        display: block;
-        width: 100%;
-        background: linear-gradient(90deg, #FF8C00, #FFD700); /* 오렌지~골드 */
-        color: #000000 !important;
-        text-align: center;
-        padding: 22px;
-        font-size: 20px;
-        font-weight: 900; /* 제일 두껍게 */
-        border-radius: 10px;
-        text-decoration: none;
-        margin-top: 20px;
-        animation: pulse 2s infinite; 
-        box-shadow: 0 5px 15px rgba(255, 140, 0, 0.4);
-        transition: 0.3s;
-        line-height: 1.4;
+        display: block; width: 100%; background: linear-gradient(90deg, #FF8C00, #FFD700);
+        color: #000000 !important; text-align: center; padding: 22px; font-size: 20px;
+        font-weight: 900; border-radius: 10px; text-decoration: none; margin-top: 20px;
+        animation: pulse 2s infinite; box-shadow: 0 5px 15px rgba(255, 140, 0, 0.4);
+        transition: 0.3s; line-height: 1.4;
+    }
+    
+    /* 8. Footer 스타일 (회색, 흐리게) */
+    .footer-text {
+        text-align: center; color: #888; font-size: 12px; margin-top: 40px; 
+        padding-bottom: 30px; line-height: 1.5; font-weight: 400 !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
 # --- 사이드바 ---
 with st.sidebar:
-    st.header("🔐 관리자 승인")
+    st.markdown("<h2 style='color: #FFF; font-weight: bold;'>🔐 관리자 승인</h2>", unsafe_allow_html=True)
     if "GEMINI_API_KEY" in st.secrets:
         gemini_api_key = st.secrets["GEMINI_API_KEY"]
     else:
         gemini_api_key = st.text_input("API Key 입력", type="password")
 
 # --- 메인 화면 (Header) ---
-st.markdown("<h1>루나 : 운명 설계사<br><span style='font-size: 0.8em;'>(문제해결 팩폭 상담소)</span></h1>", unsafe_allow_html=True)
+# [제목] 칼각 정렬을 위해 div로 분리
+st.markdown("<div class='main-title'>루나 : 운명 설계사</div>", unsafe_allow_html=True)
+st.markdown("<div class='title-sub'>(문제해결 팩폭 상담소)</div>", unsafe_allow_html=True)
 
-# [수정된 서브 멘트: 팩폭 주의 강조]
+# [서브 멘트] 팩폭 주의 강조
 st.markdown("""
-<div class='sub-header'>
+<div class='sub-header-text'>
     "혼자 끙끙 앓지 마세요."<br>
     루나 언니가 당신의 미래와 해결책을 <b>냉정하고 확실하게</b> 알려줄게요.<br>
     <span style='color: #FF6B6B; font-weight: bold;'>(※ 유리멘탈 주의 🚨)</span>
 </div>
 """, unsafe_allow_html=True)
 
-# [가격 앵커링: 필수 멘트 적용]
+# [가격표] 클릭 시 스레드 이동 + 멘트 수정 완료
 st.markdown("""
-<div class='price-tag'>
-    <span style='text-decoration: line-through; color: #888; margin-right: 10px; font-size: 16px;'>1:1 심층 상담료 50,000원</span>
-    <span class='sale-price'>지금만 무료 (0원)</span><br>
-    <div style='font-size: 15px; color: #DDD; margin-top:12px; font-weight: 500; line-height: 1.5;'>
-        ⚠️ <b>주의:</b> 복채 대신 <b>'팔로우'</b>와 <b>'댓글'</b>은 필수입니다!<br>
-        <span style='color:#FFD700; font-size:14px;'>(복채 내야 효과가 최고인 거 아시죠?^^✨)</span>
+<a href="https://www.threads.net/@luna_fortune_2026" target="_blank" class="price-tag-link">
+    <div class='price-tag'>
+        <span style='text-decoration: line-through; color: #888; margin-right: 10px; font-size: 16px;'>1:1 심층 상담료 50,000원</span>
+        <span class='sale-price'>지금만 무료 (0원)</span><br>
+        <div style='font-size: 15px; color: #DDD; margin-top:12px; font-weight: 500; line-height: 1.5;'>
+            ⚠️ <b>주의:</b> 복채 대신 <b>'팔로우', '댓글'은 필수!!</b><br>
+            <span style='color:#FFD700; font-size:14px;'>(복채 내야 효과가 최고인 거 아시죠?^^✨)</span>
+        </div>
     </div>
-</div>
+</a>
 """, unsafe_allow_html=True)
 
 # --- 입력 폼 (Input) ---
@@ -199,7 +196,7 @@ with col_main:
     
     c1, c2 = st.columns(2)
     with c1:
-        name = st.text_input("이름 (본명)", placeholder="예: 홍길동")
+        name = st.text_input("이름 (본명)", placeholder="예: 박경미")
         gender = st.radio("성별", ["여성", "남성"], horizontal=True)
     with c2:
         birth_date = st.date_input("생년월일", min_value=datetime.date(1950, 1, 1), value=datetime.date(1990, 1, 1))
@@ -207,16 +204,15 @@ with col_main:
 
     st.markdown("<br>", unsafe_allow_html=True)
     
-    # 질문 유도
+    # 버튼 멘트: 설렘 vs 냉정
     if "2026" in topic:
         worry = st.text_input("지금 가장 꽉 막힌 문제는?", placeholder="예: 돈이 자꾸 새요, 남편이랑 자꾸 싸워요, 건강이 불안해요...")
-        # [수정된 버튼 텍스트: 설렘 + 액션]
         btn_text = "두근두근 💓 2026년 미리 보고, 인생 바꿀 '해결책' 찾으러 가자!"
     else:
         worry = st.text_input("오늘 컨디션이나 기분은?", placeholder="예: 이유 없이 불안함, 중요한 계약 앞둠...")
         btn_text = "⚡ 오늘 내 기운, 냉정하게 확인하러 가기!"
 
-# 쿠팡 링크 (행운템)
+# 쿠팡 링크
 lucky_bag = [
     "https://link.coupang.com/a/c7U5ic", "https://link.coupang.com/a/c7Vcxs", 
     "https://link.coupang.com/a/c7VexJ", "https://link.coupang.com/a/c7VfKc", 
@@ -239,7 +235,7 @@ if st.button(btn_text, use_container_width=True):
             calendar.setSolarDate(birth_date.year, birth_date.month, birth_date.day)
             lunar_date = calendar.LunarIsoFormat()
             
-            # [프롬프트: 팩트 폭력 + 해결책 중심]
+            # [프롬프트] 팩폭 + 해결책 + 비유
             prompt = f"""
             [System Role]
             Act as 'Luna', a sharp, insightful fortune consultant (The 'Unnie' who gives Fact-bombs).
@@ -272,9 +268,10 @@ if st.button(btn_text, use_container_width=True):
                 model = genai.GenerativeModel("gemini-2.5-flash")
                 response = model.generate_content(prompt)
                 
+                # 결과 출력
                 st.markdown(f"<div class='letter-box'><h3>📋 {name}님을 위한 운명 진단서</h3>{response.text}</div>", unsafe_allow_html=True)
                 
-                # --- [수익화] 쇼핑 유도 황금 박스 (네가 원한 멘트 완벽 적용) ---
+                # --- [수익화] 쇼핑 유도 황금 박스 (네가 원한 멘트 적용) ---
                 st.markdown(f"""
                 <div class='prescription-box'>
                     <h3 style='color: #FF6B6B; margin:0; font-size:22px; font-weight:900;'>🚨 {name}님, 긴급 처방입니다!</h3>
@@ -295,8 +292,13 @@ if st.button(btn_text, use_container_width=True):
                 </div>
                 """, unsafe_allow_html=True)
                 
-                # Footer
-                st.markdown("<div style='text-align:center; color:#666; font-size:13px; margin-top:20px;'>COPYRIGHT ⓒ LUNA SOLUTION. 본 추천은 쿠팡 파트너스 활동이며, 수익은 무료 상담 운영에 큰 힘이 됩니다.</div>", unsafe_allow_html=True)
+                # --- [Footer] 법적 문구 (회색, 흐리게) ---
+                st.markdown("""
+                <div class='footer-text'>
+                    이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.<br>
+                    (무료 상담 서비스를 유지하는 데 사용됩니다.)
+                </div>
+                """, unsafe_allow_html=True)
 
         except Exception as e:
             st.error(f"진단 요청이 폭주하여 시스템이 과열되었습니다. 잠시 후 다시 눌러주세요. ({e})")
