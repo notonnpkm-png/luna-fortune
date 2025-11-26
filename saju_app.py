@@ -6,7 +6,7 @@ import random
 
 # ==========================================
 # [PROJECT: LUNA - THE FINAL MASTERPIECE]
-# "모바일 세로 화면 최적화 + 이름 보존 명령 추가"
+# "모바일 세로 화면 최적화 + 스레드 감성 찐언니 페르소나 탑재"
 # ==========================================
 
 # 1. 페이지 기본 설정 (무조건 맨 위)
@@ -26,7 +26,7 @@ st.markdown("""
     /* 전체 기본 폰트 설정 (기본 사이즈도 살짝 줄임) */
     html, body, [class*="css"] {
         font-family: 'Noto Serif KR', serif;
-        font-size: 18px !important; /* 20px -> 18px 축소 */
+        font-size: 22px !important; /* 18px -> 22px 확대 */
         font-weight: 500;
     }
 
@@ -253,7 +253,7 @@ st.markdown("<br>", unsafe_allow_html=True)
 # 고민 입력창 (제자님 확정 자극적 예시 적용)
 if "2026" in topic:
     worry = st.text_input("가장 큰 고민은?", placeholder="예: 남편이 바람난거같아요, 돈을 언제 벌수있을까요?, 친구랑 계속 싸워요")
-    btn_label = "두근두근 💓 2026년 미리 보고 해결책 찾기!"
+    btn_label = "두근 💓 2026년 미리 보고 해결책 찾기!"
 else:
     worry = st.text_input("오늘 기분은?", placeholder="예: 소개팅 하는데 잘 될까요? 면접이 있어요.")
     # 버튼 멘트 (확정)
@@ -282,41 +282,63 @@ if st.button(btn_label):
             calendar.setSolarDate(birth_date.year, birth_date.month, birth_date.day)
             lunar_date = calendar.LunarIsoFormat()
             
-            # 성별에 따른 호칭 설정
+            # [수정] 성별에 따른 호칭 동적 설정 (남성 -> 누나, 여성 -> 언니)
             if gender == "남성":
-                host_title = "누나"
+                my_title = "누나"
             else:
-                host_title = "언니"
+                my_title = "언니"
 
-            # --- [핵심] 40대 사회 언니 페르소나 프롬프트 (수정: 이름 보존 명령 추가) ---
+            # --- [핵심] 40대 찐언니/누나 페르소나 (V2: 스레드 감성 완벽 이식) ---
             prompt = f"""
             [Role]
-            You are 'Luna', a 40-something female fortune consultant. 
-            You are like a close, experienced '{host_title}' who gives realistic advice.
+            You are 'Luna', a cool, stylish, and affectionate 40-something older sister ({my_title}).
+            You are NOT a boring fortune teller. You are a life mentor who speaks blunt truths but deeply cares about your younger siblings (the user).
             
-            [Tone & Manner]
-            - **Important:** Address the user exactly as '{name}'. Do NOT change the name (e.g., do not change "이상용" to "용상").
-            - **Mandatory:** Use emojis (🔥, 💸, 😢, ✨, etc.) frequently to make the text lively and engaging.
-            - Use polite Korean 'Haeyo-che' (해요체). e.g., "~했군요.", "~그랬겠어요."
-            - Do NOT use plain form (Banmal) like "했어", nor overly formal "Hapshow-che".
-            - **Phase 1 (Empathy):** Start with deep empathy. Use phrases like "Aigo...", "You must have been so stressed...", "I understand your frustration."
-            - **Phase 2 (Analysis):** Be objective and sharp here. "But realistically...", "Looking at your fortune...", "Don't deceive yourself."
-            - **Phase 3 (Solution):** Give clear, actionable advice. Support them warmly at the end.
+            [Target Audience]
+            Women/Men in their 30s who are stressed about money, career, and relationships. They hate cliché advice.
             
+            [Tone & Manner - "Thread Style"]
+            1. **Speech Level:** Use "Banmal" (Informal/Casual Korean) for the entire conversation like a close sister. (e.g., "왔어?", "그랬구나.", "이건 진짜 아니야.")
+            2. **Addressing Rule (CRITICAL):** - Even though you use Banmal, **ALWAYS address the user as "{FirstName}님"** (Remove the surname and add '님').
+               - **Example:** If input is "박경미", call her **"경미님"** (NOT "경미야", NOT "박경미씨", NOT "박경미님").
+               - Mix with "우리 동생".
+               - **Opening:** "우리 동생, {name}에서 성 빼고 이름+님 왔어?" (e.g. "우리 동생, 경미님 왔어?")
+            3. **Direct & Provocative:** Don't be vague. 
+               - Bad: "Realtionships might be difficult."
+               - Good: "남자는 좀 꼬이는데, 실속이 없어. 정신 똑바로 차려야 해."
+            4. **Empathy but Fact-Bombing:** Start with empathy ("Aigo, so hard right?"), then hit them with facts ("But honestly, you are too stubborn.").
+
+            [Output Structure - STRICTLY FOLLOW THIS FORMAT]
+            
+            **1. Intro**
+            - Start with: "우리 동생, **[Name]님** 왔어? 요즘 {worry} 때문에 머리 좀 아팠겠네." (Make sure to remove surname for [Name]님).
+            - Empathize with their specific situation briefly. "마음이 싱숭생숭하지? {my_title}가 시원하게 긁어줄게."
+            
+            **2. 🔥 팩트 진단 (Personality)**
+            - Analyze their personality using Saju elements (Wood, Fire, etc.) but use **METAPHORS**.
+            - Example: "우리 **[Name]님**은 봄날의 큰 소나무(甲木) 같은 사람이야."
+            - **Contrast:** Mention their outer strength vs. inner stress/weakness. "겉으론 쿨한 척 해도 속으론 끙끙 앓지? 너 맘 여린 거 {my_title}는 다 보여."
+            
+            **3. 🔮 미래 예언 ({topic})**
+            - Give a clear verdict.
+            - **Money/Career:** Hot or Cold? (e.g., "돈? 아주 좋아! 그냥 질러.")
+            - **Family/Health/Love:** Red light or Green light? (e.g., "근데 연애는 좀 꽝이야.", "건강은 '번아웃' 조심해.")
+            - Use terms like "{my_title}가 보증할게", "이게 문제야", "정신 똑바로 차려".
+            
+            **4. 💋 {my_title}의 코디 추천 (Solution)**
+            - Give a specific **Real-world Item** based on their missing element.
+            - Format: **추천 아이템: [Color] [Item Name]** (e.g., 블랙 가죽 다이어리, 레드 립스틱, 메탈 시계)
+            - Explain WHY based on Saju elements (e.g., "You have too much Fire, so you need Black (Water) to cool it down.").
+            - Closing: "우리 동생, 기 죽지 마. {my_title}가 항상 응원한다. 알았지?"
+
             [User Info]
             Name: {name} ({gender})
             Birth: {birth_date} (Lunar: {lunar_date})
             Topic: {topic}
             Concern: {worry}
-            My Title for you: {host_title}
-            
-            [Output Structure]
-            1. ❤️ 따뜻한 위로와 공감 (First, comfort the user deeply regarding their concern. Use emojis!)
-            2. ⚡ 냉정한 운명 분석 (Analyze the Pros and Cons based on Saju/Fortune. Be sharp but polite.)
-            3. 💊 {host_title}의 현실 처방 (Actionable advice & warm closing with emojis)
             """
             
-            with st.spinner("⚡ 루나 언니가 운명 스캔 중... (심장이 쿵!)"):
+            with st.spinner(f"⚡ 루나 {my_title}가 신기 돋는 눈으로 스캔 중... (찌릿!)"):
                 genai.configure(api_key=gemini_api_key)
                 model = genai.GenerativeModel("gemini-2.5-flash")
                 response = model.generate_content(prompt)
@@ -324,7 +346,7 @@ if st.button(btn_label):
                 # 결과 박스 (가독성 UP + 제목 줄바꿈 방지)
                 st.markdown(f"""
                 <div style="background-color:#121212; border:1px solid #333; border-radius:15px; padding:25px; margin-top:30px; line-height:1.8;">
-                    <h3 style="color:#E5C17C; border-bottom:1px solid #333; padding-bottom:10px; font-size:20px; word-break:keep-all; margin:0 0 10px 0;">📜 {name}님 운명 분석표</h3>
+                    <h3 style="color:#E5C17C; border-bottom:1px solid #333; padding-bottom:10px; font-size:20px; word-break:keep-all; margin:0 0 10px 0;">📜 {name}님을 위한 {my_title}의 독설 & 애정</h3>
                     {response.text}
                 </div>
                 """, unsafe_allow_html=True)
@@ -332,23 +354,23 @@ if st.button(btn_label):
                 # 황금박스 (쿠팡)
                 st.markdown(f"""
                 <div class="golden-box">
-                    <h3 style="color:#FF6B6B; margin:0; font-size:24px;">🚨 {name}님, 긴급 처방!</h3>
+                    <h3 style="color:#FF6B6B; margin:0; font-size:24px;">🚨 {name}님, 이거 하나만 챙겨!</h3>
                     <p style="margin-top:15px; font-size:18px; color:#DDD;">
-                        "지금 당신에게 <b>2%% 부족한 기운</b>을<br>
-                        채워줄 <b>'생존템'</b>입니다."
+                        "2026년, 너의 <b>'폼'</b>을 살려줄<br>
+                        <b>{my_title}의 원픽 생존템</b>이야."
                     </p>
                     <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:10px; margin:20px 0; color:#CCC; font-size:16px;">
-                        루나 언니가 엄선한 <b>'갓성비 행운템'</b>!<br>
-                        <b>눈도장</b>만 찍고 가도 기운이 확 달라질 거예요.
+                        비싼 굿즈 필요 없어.<br>
+                        <b>이거 하나면 기운 확 달라진다.</b> 믿어봐.
                     </div>
                     <a href="{selected_link}" target="_blank" class="pulse-button">
-                        👉 내 행운템 확인하러 가기 (Click)
+                        👉 {my_title}가 골라준 행운템 보기 (Click)
                     </a>
                 </div>
                 """, unsafe_allow_html=True)
 
         except Exception as e:
-            st.error("접속자가 많아 루나 언니가 바쁘네요! 잠시 후 다시 눌러주세요.")
+            st.error(f"접속자가 많아 루나 {my_title}가 바쁘네요! 잠시 후 다시 눌러주세요.")
 
 # 하단 문구
 st.markdown("""
