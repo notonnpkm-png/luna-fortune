@@ -3,13 +3,13 @@ import google.generativeai as genai
 import datetime
 from korean_lunar_calendar import KoreanLunarCalendar
 import random
+import textwrap # [추가] HTML 들여쓰기 버그 해결사
 
 # ==========================================
-# [PROJECT: LUNA - FINAL MASTERPIECE VER.2]
-# 1. 입력창 글씨 가시성 확보 (흰색/진하게)
-# 2. 이름 '성 떼기' 로직 적용 (박경미 -> 경미 언니)
-# 3. HTML 렌더링 오류 완벽 수정
-# 4. 고민 예시 멘트 수정 완료
+# [PROJECT: LUNA - REAL FINAL VERSION]
+# 1. 황금박스 HTML 코드 노출 버그 완벽 해결 (dedent 적용)
+# 2. 영어 지시문(Personality Analysis 등) 삭제 -> 한국어 소제목 적용
+# 3. 본문 이모지 추가로 가독성 UP
 # ==========================================
 
 # 1. 페이지 기본 설정
@@ -20,7 +20,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. [디자인] CSS 최종 (수정 금지)
+# 2. [디자인] CSS 최종
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;500;700;900&display=swap');
@@ -56,26 +56,24 @@ st.markdown("""
         max-width: 600px !important;
     }
 
-    /* [UI] 입력폼 디자인 - 가시성 해결 (흰색 글씨) */
+    /* [UI] 입력폼 디자인 - 가시성 해결 */
     .stTextInput label, .stDateInput label, .stTimeInput label, .stRadio label, div[role="radiogroup"] label p {
         color: #E5C17C !important;
         font-size: 16px !important; 
         font-weight: 700 !important; 
     }
     
-    /* 입력창 내부 텍스트 설정 */
     .stTextInput input, .stDateInput input, .stTimeInput input {
         background-color: #1E1E1E !important; 
-        color: #FFFFFF !important; /* 글씨 완전 흰색 */
+        color: #FFFFFF !important; 
         border: 1px solid #555 !important;
         height: 50px !important;
         font-size: 16px !important;
         border-radius: 8px;
         text-align: center;
-        font-weight: 600 !important; /* 글씨 굵게 */
+        font-weight: 600 !important; 
     }
     
-    /* 플레이스홀더(예시 멘트) 색상 밝게 */
     input::placeholder {
         color: #AAAAAA !important; 
         font-weight: 400 !important;
@@ -230,7 +228,6 @@ st.markdown("---")
 
 col1, col2 = st.columns(2)
 with col1:
-    # [수정] 예시 변경: 이루나
     name = st.text_input("이름 (본명)", placeholder="예: 이루나")
 with col2:
     gender = st.radio("성별", ["여성", "남성"], horizontal=True)
@@ -244,7 +241,6 @@ birth_time = st.time_input("태어난 시간 (모르면 패스)", datetime.time(
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# [수정] 고민 예시 변경
 if "2026" in topic:
     worry = st.text_input("가장 큰 고민은?", placeholder="예: 남편,남친이 바람?,돈,건강")
     btn_label = "두근 💓 2026년 미리 보고 해결책 찾기!"
@@ -275,15 +271,11 @@ if st.button(btn_label):
     elif not gemini_api_key:
         st.error("⚠️ API 키가 없어요. 관리자에게 문의하세요.")
     else:
-        # --- [핵심 로직] 성 떼기 & 호칭 정리 ---
-        # 이름이 2글자 이상이면 성(첫글자) 제거 (예: 박경미 -> 경미)
-        # 외자 이름(예: 허준)일 경우를 대비해 길이 체크
+        # 성 떼기 로직
         if len(name) > 2:
-            short_name = name[1:] # 성 제거
+            short_name = name[1:] 
         else:
-            short_name = name # 2글자 이름은 그대로 (예: 허준 -> 허준 오빠, or 준 오빠? 보통 성 떼는 게 자연스러움)
-            # 만약 2글자 이름도 성을 떼고 싶다면 아래 주석 해제
-            # if len(name) == 2: short_name = name[1:]
+            short_name = name 
 
         if gender == "남성":
             call_name = f"{short_name} 오빠" 
@@ -298,43 +290,46 @@ if st.button(btn_label):
             lunar_date = calendar.LunarIsoFormat()
             my_igan = get_day_gan(birth_date)
 
-            # 프롬프트
+            # 프롬프트 (영어 지시사항 제거 -> 한국어 제목 출력 유도)
             prompt = f"""
             [Role]
             You are 'Luna', a 30-something smart, chic consultant.
             
-            [Relationship Setting - STRICT]
-            - **User Gender:** {gender}
-            - **How you call the user:** You MUST call them "{call_name}" ONLY. (Do not include their surname).
-            - **Your Tone:** Friendly "Banmal". 
-              - If user is Male: Act like a cute "Younger Sister" (Yeodongsaeng).
-              - If user is Female: Act like a close "Younger Sister/Friend".
+            [Relationship Setting]
+            - Call the user "{call_name}" ONLY.
+            - Tone: Friendly "Banmal" (Informal Korean).
+            
+            [Instructions]
+            - **Emojis:** Use 1-2 relevant emojis in EVERY paragraph to make it fun. 🦄✨
+            - **No English Headers:** Output the structure headers in KOREAN (e.g., "### 🔎 너의 성격 분석"). Do NOT output "2. Personality Analysis".
 
             [User Profile]
             - Birth: {birth_date} (Lunar: {lunar_date})
-            - Core Element: {my_igan}
+            - Element: {my_igan}
             - Worry: {worry}
             - Topic: {topic}
 
-            [Output Structure]
+            [Output Structure (Follow this strictly in Korean)]
 
-            **1. [Greeting]**
+            **Section 1. [인사]**
             - "어, {call_name} 왔어? 얼굴이 왜 그래, 무슨 일 있어?"
-            - Empathize with {worry}.
+            - Empathize with {worry}. 😢
 
-            **2. [Personality Analysis]**
-            - Title: Emoji + Short Title
-            - Analyze based on {my_igan}. Cold reading technique.
+            **Section 2. [성격 분석]**
+            - Header: "### 🔎 {call_name}의 진짜 성격은?"
+            - Analyze based on {my_igan}. Cold reading.
 
-            **3. [Prediction]**
+            **Section 3. [미래 예언]**
+            - Header: "### ⚡ 2026년(오늘) 운세 팩트 체크"
             - Clear advice for {topic}.
 
-            **4. [Recommendation]**
+            **Section 4. [행운템 추천]**
+            - Header: "### 🍀 루나의 처방전 (행운템)"
             - Suggest a "Lucky Color/Material". No Links.
             - Explain WHY.
 
-            **5. [Closing]**
-            - "I picked some budget-friendly items below. Just looking helps."
+            **Section 5. [마무리]**
+            - "I picked some budget-friendly items below."
             - "Cheer up, {call_name}!"
             """
             
@@ -343,7 +338,6 @@ if st.button(btn_label):
                 model = genai.GenerativeModel("gemini-2.5-flash") 
                 response = model.generate_content(prompt)
                 
-                # 결과 리포트 출력
                 st.markdown(f"""
                 <div style="background-color:#121212; border:1px solid #333; border-radius:15px; padding:25px; margin-top:20px; line-height:1.8;">
                     <h3 style="color:#E5C17C; border-bottom:1px solid #444; padding-bottom:10px; font-size:20px; word-break:keep-all; margin:0 0 15px 0;">
@@ -355,35 +349,35 @@ if st.button(btn_label):
                 </div>
                 """, unsafe_allow_html=True)
                 
-                # --- [황금박스 HTML 오류 수정 완료] ---
-                # f-string 안에서 따옴표 충돌 방지를 위해 변수로 깔끔하게 정리
-                golden_box_html = f"""
-                <div class="golden-box">
-                    <h3 style="color:#FF6B6B; margin:0; font-size:22px; font-weight:900; line-height: 1.3;">
-                        🎁 {call_name},<br>그냥 가면 손해!
-                    </h3>
-                    
-                    <div style="margin-top:20px; font-size:17px; color:#DDD; line-height: 1.6;">
-                        "{call_name}, 지금 딱 <b>2% 부족한 행운</b>을<br>
-                        채워줄 아이템이야."
-                    </div>
-                    
-                    <div style="margin-top:15px; font-size:16px; color:#BBB; line-height: 1.5;">
-                        루나가 <b>완전 갓성비</b>로만 골라놨어.<br>
-                        부담 갖지 마.<br>
-                        <span style="color:#FFD700; font-weight:bold;">그냥 구경만 해도 막힌 운이 뻥 뚫릴 거야.</span>
-                    </div>
+                # --- [황금박스 버그 해결: dedent 사용] ---
+                # 들여쓰기를 없애서 코드로 인식되는 문제 해결
+                golden_box_html = textwrap.dedent(f"""
+                    <div class="golden-box">
+                        <h3 style="color:#FF6B6B; margin:0; font-size:22px; font-weight:900; line-height: 1.3;">
+                            🎁 {call_name},<br>그냥 가면 손해!
+                        </h3>
+                        
+                        <div style="margin-top:20px; font-size:17px; color:#DDD; line-height: 1.6;">
+                            "{call_name}, 지금 딱 <b>2% 부족한 행운</b>을<br>
+                            채워줄 아이템이야."
+                        </div>
+                        
+                        <div style="margin-top:15px; font-size:16px; color:#BBB; line-height: 1.5;">
+                            루나가 <b>완전 갓성비</b>로만 골라놨어.<br>
+                            부담 갖지 마.<br>
+                            <span style="color:#FFD700; font-weight:bold;">그냥 구경만 해도 막힌 운이 뻥 뚫릴 거야.</span>
+                        </div>
 
-                    <a href="{selected_link}" target="_blank" class="pulse-button">
-                        🚀 루나의 [시크릿 행운템] 구경하고 액땜하기 (Click)
-                    </a>
-                    
-                    <div class="coupang-notice">
-                        이 포스팅은 쿠팡 파트너스 활동의 일환으로,<br>
-                        이에 따른 일정액의 수수료를 제공받습니다.
+                        <a href="{selected_link}" target="_blank" class="pulse-button">
+                            🚀 루나의 [시크릿 행운템] 구경하고 액땜하기 (Click)
+                        </a>
+                        
+                        <div class="coupang-notice">
+                            이 포스팅은 쿠팡 파트너스 활동의 일환으로,<br>
+                            이에 따른 일정액의 수수료를 제공받습니다.
+                        </div>
                     </div>
-                </div>
-                """
+                """)
                 
                 st.markdown(golden_box_html, unsafe_allow_html=True)
 
