@@ -3,12 +3,11 @@ import google.generativeai as genai
 import datetime
 from korean_lunar_calendar import KoreanLunarCalendar
 import random
-import textwrap # [필수] 들여쓰기 제거 도구
 
 # ==========================================
-# [PROJECT: LUNA - FINAL FIX COMPLETE v2]
-# 1. 황금박스 HTML 코드 노출 문제 완벽 해결 (textwrap.dedent 적용)
-# 2. 모든 멘트 및 호칭 로직 정상 적용 확인
+# [PROJECT: LUNA - FINAL RESCUE VERSION]
+# 1. 황금박스 "흰색 코드 노출" 사고 원천 봉쇄 (문자열 조립 방식 적용)
+# 2. 모든 기능(호칭, 로직, 디자인) 유지
 # ==========================================
 
 # 1. 페이지 기본 설정
@@ -170,38 +169,17 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- [핵심 수정] 황금박스 생성 함수 (공백 제거 적용) ---
+# --- [안전 제일] 황금박스 생성 함수 (조립 방식) ---
 def create_golden_box(name_title, link):
-    # textwrap.dedent를 사용하여 들여쓰기 공백을 강제로 삭제합니다.
-    # 이제 무조건 HTML 코드가 아닌 '디자인'으로 렌더링됩니다.
-    html_content = f"""
-    <div class="golden-box">
-        <h3 style="color:#FF6B6B; margin:0; font-size:22px; font-weight:900; line-height: 1.3;">
-            🎁 {name_title},<br>행운템 꼭 보고가야해!!
-        </h3>
-        
-        <div style="margin-top:20px; font-size:17px; color:#DDD; line-height: 1.6;">
-            "{name_title}, 지금 딱 <b>2% 부족한 행운</b>을<br>
-            채워줄 아이템이야."
-        </div>
-        
-        <div style="margin-top:15px; font-size:16px; color:#BBB; line-height: 1.5;">
-            루나가 <b>완전 갓성비</b>로만 골라놨어.<br>
-            부담 갖지 마.<br>
-            <span style="color:#FFD700; font-weight:bold;">그냥 구경만 해도 막힌 운이 뻥 뚫릴 거야.</span>
-        </div>
-
-        <a href="{link}" target="_blank" class="pulse-button">
-            🚀 루나의 [시크릿 행운템] 구경하고 액땜하기 (Click)
-        </a>
-        
-        <div class="coupang-notice">
-            이 포스팅은 쿠팡 파트너스 활동의 일환으로,<br>
-            이에 따른 일정액의 수수료를 제공받습니다.
-        </div>
-    </div>
-    """
-    return textwrap.dedent(html_content)
+    # 이렇게 한 줄씩 조립하면 '들여쓰기 에러'가 절대 날 수 없습니다.
+    html = '<div class="golden-box">'
+    html += f'<h3 style="color:#FF6B6B; margin:0; font-size:22px; font-weight:900; line-height: 1.3;">🎁 {name_title},<br>행운템 꼭 보고가야해!!</h3>'
+    html += f'<div style="margin-top:20px; font-size:17px; color:#DDD; line-height: 1.6;">"{name_title}, 지금 딱 <b>2% 부족한 행운</b>을<br>채워줄 아이템이야."</div>'
+    html += '<div style="margin-top:15px; font-size:16px; color:#BBB; line-height: 1.5;">루나가 <b>완전 갓성비</b>로만 골라놨어.<br>부담 갖지 마.<br><span style="color:#FFD700; font-weight:bold;">그냥 구경만 해도 막힌 운이 뻥 뚫릴 거야.</span></div>'
+    html += f'<a href="{link}" target="_blank" class="pulse-button">🚀 루나의 [시크릿 행운템] 구경하고 액땜하기 (Click)</a>'
+    html += '<div class="coupang-notice">이 포스팅은 쿠팡 파트너스 활동의 일환으로,<br>이에 따른 일정액의 수수료를 제공받습니다.</div>'
+    html += '</div>'
+    return html
 
 # --- 일간 계산 함수 ---
 def get_day_gan(birth_date):
@@ -379,7 +357,7 @@ if st.button(btn_label):
                 </div>
                 """, unsafe_allow_html=True)
                 
-                # --- [황금박스] 함수 호출 (textwrap 적용으로 안전) ---
+                # --- [황금박스] 안전하게 생성된 함수 호출 ---
                 golden_box_html = create_golden_box(call_name, selected_link)
                 st.markdown(golden_box_html, unsafe_allow_html=True)
 
