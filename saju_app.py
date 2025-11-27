@@ -3,12 +3,12 @@ import google.generativeai as genai
 import datetime
 from korean_lunar_calendar import KoreanLunarCalendar
 import random
-import textwrap
+import textwrap # [필수] 들여쓰기 제거 도구
 
 # ==========================================
-# [PROJECT: LUNA - REAL FINAL COMPLETE]
-# 1. 황금박스 멘트 수정: "그냥 가면 손해" -> "행운템 꼭 보고가야해!!"
-# 2. 모든 기능(호칭, 성떼기, HTML안전장치) 정상 작동 확인
+# [PROJECT: LUNA - FINAL FIX COMPLETE v2]
+# 1. 황금박스 HTML 코드 노출 문제 완벽 해결 (textwrap.dedent 적용)
+# 2. 모든 멘트 및 호칭 로직 정상 적용 확인
 # ==========================================
 
 # 1. 페이지 기본 설정
@@ -170,9 +170,11 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- [황금박스 생성 함수] 멘트 수정 완료 ---
+# --- [핵심 수정] 황금박스 생성 함수 (공백 제거 적용) ---
 def create_golden_box(name_title, link):
-    return f"""
+    # textwrap.dedent를 사용하여 들여쓰기 공백을 강제로 삭제합니다.
+    # 이제 무조건 HTML 코드가 아닌 '디자인'으로 렌더링됩니다.
+    html_content = f"""
     <div class="golden-box">
         <h3 style="color:#FF6B6B; margin:0; font-size:22px; font-weight:900; line-height: 1.3;">
             🎁 {name_title},<br>행운템 꼭 보고가야해!!
@@ -199,6 +201,7 @@ def create_golden_box(name_title, link):
         </div>
     </div>
     """
+    return textwrap.dedent(html_content)
 
 # --- 일간 계산 함수 ---
 def get_day_gan(birth_date):
@@ -318,7 +321,6 @@ if st.button(btn_label):
             lunar_date = calendar.LunarIsoFormat()
             my_igan = get_day_gan(birth_date)
 
-            # 프롬프트
             prompt = f"""
             [Role]
             You are 'Luna', a 30-something smart, chic consultant.
@@ -377,7 +379,7 @@ if st.button(btn_label):
                 </div>
                 """, unsafe_allow_html=True)
                 
-                # --- [황금박스] 함수 호출로 안전하게 생성 ---
+                # --- [황금박스] 함수 호출 (textwrap 적용으로 안전) ---
                 golden_box_html = create_golden_box(call_name, selected_link)
                 st.markdown(golden_box_html, unsafe_allow_html=True)
 
